@@ -27,7 +27,9 @@ public class Server {
         APIHandler APIHandler = new APIHandler();
         Spark.get("api", APIHandler);
 
-        
+        Spark.path("/api", () -> {
+            Spark.get("/get-user-code", APIHandler);
+        });
 
         Spark.init();
         Spark.awaitInitialization();

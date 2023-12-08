@@ -3,7 +3,6 @@ import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory;
 import handler.SearchHandler;
-import handler.LoadHandler;
 import handler.ViewHandler;
 import okio.Buffer;
 import org.junit.jupiter.api.AfterEach;

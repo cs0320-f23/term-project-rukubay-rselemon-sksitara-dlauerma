@@ -1,6 +1,15 @@
 package statistics;
 
 public class Statistics{
+  private List<int> users;
+  private List<float> overlaps;
+
+  public List<int> getUsers(){
+    return users;
+  }
+  public List<float> getOverlaps(){
+    return overlaps;
+
   public float computeOverlap(List<String> user1, List<String> user2){
     float sum = 0;
     for (int i = 0; i < user1.size(); i++){
@@ -17,5 +26,13 @@ public class Statistics{
       sum += overlaps.get(i) * weights.get(i);
     }
     return sum;
+  }
+
+  public List<float> rankedList(List<String> user, List<List<String>> friends) {
+    for (int i = 0; i < user.size(); i++) {
+      overlaps.add(computeOverlap(user, friends.get(i)));
+      users.add(i);
+    }
+    //note: add sorting functionality here
   }
 }

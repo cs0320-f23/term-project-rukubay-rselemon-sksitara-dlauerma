@@ -16,10 +16,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TopArtistsHandler implements Route{
-    public final SpotifyApi spotifyApi;
+    private static SpotifyApi spotifyApi;
     public TopArtistsHandler(SpotifyApi spotifyApi) {
         this.spotifyApi = spotifyApi;
     }
+
+    public static SpotifyApi getSpotifyApi() {
+        return spotifyApi;
+    }
+
+    public static void setSpotifyApi(SpotifyApi spotifyApi) {
+        TopArtistsHandler.spotifyApi = spotifyApi;
+    }
+
     public Object handle(Request request, Response response) {
         Moshi moshi = new Moshi.Builder().build();
         Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);

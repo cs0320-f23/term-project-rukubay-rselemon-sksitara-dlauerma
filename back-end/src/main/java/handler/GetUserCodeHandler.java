@@ -17,6 +17,8 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+import server.Server;
+
 /**
  * Gets the spotify code for the user and stores the information to be able to access user info
  */
@@ -46,7 +48,6 @@ public class GetUserCodeHandler implements Route {
             AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
             this.spotifyApi.setAccessToken(authorizationCodeCredentials.getAccessToken());
             this.spotifyApi.setRefreshToken(authorizationCodeCredentials.getRefreshToken());
-
             System.out.println("Expires in: " + authorizationCodeCredentials.getExpiresIn());
             responseMap.put("result", "success");
 

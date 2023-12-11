@@ -3,12 +3,14 @@ package server;
 import handler.GetUserCodeHandler;
 import handler.LoginHandler;
 import handler.TopArtistsHandler;
+import java.util.Map;
 import spark.Spark;
 
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
 
 import java.net.URI;
+import datatypes.User;
 
 import static spark.Spark.after;
 
@@ -16,6 +18,10 @@ import static spark.Spark.after;
  * This class makes the server which makes all the handlers related to the project
  */
 public class Server {
+    private static Map<String, User> users;
+    private Map<String, User> getUsers() {
+        return users;
+    }
 
     private static final String clientId = spotifyKeys.CLIENT_ID;
 

@@ -36,8 +36,6 @@ public class LoginHandler implements Route {
         URI uri = authorizationCodeUriRequest.execute();
         responseMap.put("uri", uri.toString());
 
-        System.out.println(uri);
-
         return adapter.toJson(responseMap);
     }
 }

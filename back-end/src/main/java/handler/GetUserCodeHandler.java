@@ -30,6 +30,8 @@ public class GetUserCodeHandler implements Route {
     }
     public Object handle(Request request, Response response) {
 
+        System.out.println(request);
+
         this.code = request.queryParams("code");
 
         Moshi moshi = new Moshi.Builder().build();
@@ -37,7 +39,6 @@ public class GetUserCodeHandler implements Route {
         JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
         Map<String, Object> responseMap = new HashMap<>();
 
-        System.out.println(this.code);
         AuthorizationCodeRequest authorizationCodeRequest = this.spotifyApi.authorizationCode(this.code)
                 .build();
 

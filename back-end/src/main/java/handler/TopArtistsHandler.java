@@ -25,7 +25,6 @@ public class TopArtistsHandler implements Route{
         Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
         JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
         Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("result", "success");
 
         GetUsersTopArtistsRequest getUsersTopArtistsRequest = this.spotifyApi.getUsersTopArtists()
                 .time_range("medium_term")
@@ -34,7 +33,9 @@ public class TopArtistsHandler implements Route{
         try {
             Paging<Artist> artists = getUsersTopArtistsRequest.execute();
             responseMap.put("artists", artists.getItems());
+            responseMap.put("result", "success");
         } catch (Exception e) {
+            responseMap.put("result", "failure");
             e.printStackTrace();
         }
 

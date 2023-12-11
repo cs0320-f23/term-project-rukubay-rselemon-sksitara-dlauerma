@@ -11,7 +11,7 @@ import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
 
 import java.net.URI;
-import datatypes.User;
+import datatypes.ourUser;
 
 import static spark.Spark.after;
 
@@ -19,9 +19,13 @@ import static spark.Spark.after;
  * This class makes the server which makes all the handlers related to the project
  */
 public class Server {
-    private static Map<String, User> users;
-    private Map<String, User> getUsers() {
+    public Map<String, ourUser> users;
+    private Map<String, ourUser> getUsers() {
         return users;
+    }
+
+    private void setUsers(Map<String, ourUser> users) {
+        this.users = users;
     }
 
     private static final String clientId = spotifyKeys.CLIENT_ID;

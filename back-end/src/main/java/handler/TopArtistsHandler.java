@@ -16,21 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TopArtistsHandler implements Route{
-<<<<<<< HEAD
     private final SpotifyApi spotifyApi;
-=======
-    private static SpotifyApi spotifyApi;
->>>>>>> d5709f9a9292bf068443ea43a44c1150980d6924
     public TopArtistsHandler(SpotifyApi spotifyApi) {
         this.spotifyApi = spotifyApi;
-    }
-
-    public static SpotifyApi getSpotifyApi() {
-        return spotifyApi;
-    }
-
-    public static void setSpotifyApi(SpotifyApi spotifyApi) {
-        TopArtistsHandler.spotifyApi = spotifyApi;
     }
 
     public Object handle(Request request, Response response) {

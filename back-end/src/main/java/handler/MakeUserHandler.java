@@ -3,6 +3,7 @@ package handler;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
+import java.util.List;
 import org.apache.hc.core5.http.ParseException;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
@@ -19,6 +20,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+
+import datatypes.ourUser;
 
 /**
  * Endpoint which creates and populates a user profile, expects a username and password
@@ -37,16 +40,17 @@ public class MakeUserHandler implements Route {
         // user info
         String username = request.queryParams("username");
         String password = request.queryParams("password");
+        ourUser newUser = new ourUser(username, password);
 
         GetCurrentUsersProfileRequest getCurrentUsersProfileRequest = spotifyApi.getCurrentUsersProfile()
                 .build();
-        try {
-            User user = getCurrentUsersProfileRequest.execute();
-            String spotifyUsername = user.getDisplayName();
-            
-        } catch (IOException | SpotifyWebApiException | ParseException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            User user = getCurrentUsersProfileRequest.execute();
+//            String spotifyUsername = user.getDisplayName();
+//
+//        } catch (IOException | SpotifyWebApiException | ParseException e) {
+//            e.printStackTrace();
+//        }
 
 
         GetUsersTopArtistsRequest getUsersTopArtistsRequest = this.spotifyApi.getUsersTopArtists()
@@ -56,6 +60,8 @@ public class MakeUserHandler implements Route {
 
         try {
             Paging<Artist> artists = getUsersTopArtistsRequest.execute();
+            newUser.setTopArtists(List.of(artists.getItems()));
+            System.out.println(newUser.getTopArtists().get(0).getName());
             responseMap.put("artists", artists.getItems());
             responseMap.put("result", "success");
         } catch (Exception e) {

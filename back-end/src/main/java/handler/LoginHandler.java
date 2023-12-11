@@ -11,8 +11,8 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-public class APIHandler implements Route {
-    public APIHandler() {}
+public class LoginHandler implements Route {
+    public LoginHandler() {}
     public Object handle(Request request, Response response) {
         Moshi moshi = new Moshi.Builder().build();
         Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
@@ -20,6 +20,5 @@ public class APIHandler implements Route {
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("result", "success");
         return adapter.toJson(responseMap);
-
     }
 }

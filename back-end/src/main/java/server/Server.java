@@ -16,9 +16,9 @@ import static spark.Spark.after;
  */
 public class Server {
 
-    private static final String clientId = "9c97352297bb4fa69f00cde739367e5e";
+    private static final String clientId = spotifyKeys.CLIENT_ID;
 
-    private static final String clientSecret = "cea87719a9394c28a22492fac7df0416";
+    private static final String clientSecret = spotifyKeys.CLIENT_SECRET;
 
     private static final URI redirectUri = SpotifyHttpManager.makeUri("http:localhost:8080/api/get-user-code");
 
@@ -46,7 +46,7 @@ public class Server {
 
 
 
-        GetUserCodeHandler GetUserCodeHandler = new GetUserCodeHandler();
+        GetUserCodeHandler GetUserCodeHandler = new GetUserCodeHandler(spotifyApi, code);
         LoginHandler LoginHandler = new LoginHandler(spotifyApi);
 
         Spark.path("/api", () -> {

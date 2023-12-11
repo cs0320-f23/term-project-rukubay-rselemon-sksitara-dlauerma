@@ -19,6 +19,9 @@ public class GetUserCodeHandler implements Route {
         JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("result", "success");
+
+
+
         return adapter.toJson(responseMap);
 
     }

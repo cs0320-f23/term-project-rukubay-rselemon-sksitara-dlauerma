@@ -2,6 +2,7 @@ package server;
 
 import handler.GetUserCodeHandler;
 import handler.LoginHandler;
+import handler.MakeUserHandler;
 import handler.TopArtistsHandler;
 import spark.Spark;
 
@@ -49,11 +50,13 @@ public class Server {
         GetUserCodeHandler getUserCodeHandler = new GetUserCodeHandler(spotifyApi, code);
         LoginHandler loginHandler = new LoginHandler(spotifyApi);
         TopArtistsHandler topArtistsHandler = new TopArtistsHandler(spotifyApi);
+        MakeUserHandler makeUserHandler = new MakeUserHandler(spotifyApi);
 
         Spark.path("/api", () -> {
             Spark.get("/get-user-code", getUserCodeHandler);
             Spark.get("/login", loginHandler);
             Spark.get("/top-artists", topArtistsHandler);
+            Spark.get("/make-user", makeUserHandler);
         });
 
         Spark.init();

@@ -2,6 +2,7 @@ package server;
 
 import handler.GetUserCodeHandler;
 import handler.LoginHandler;
+import handler.TopArtistsHandler;
 import spark.Spark;
 
 import se.michaelthelin.spotify.SpotifyApi;
@@ -20,9 +21,9 @@ public class Server {
 
     private static final String clientSecret = spotifyKeys.CLIENT_SECRET;
 
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http:localhost:8080/api/get-user-code");
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("localhost:8080/api/get-user-code");
 
-    private static final String code = "";
+    private String code = "";
 
     private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
             .setClientId(clientId)
@@ -46,12 +47,14 @@ public class Server {
 
 
 
-        GetUserCodeHandler GetUserCodeHandler = new GetUserCodeHandler(spotifyApi, code);
-        LoginHandler LoginHandler = new LoginHandler(spotifyApi);
+        GetUserCodeHandler getUserCodeHandler = new GetUserCodeHandler(spotifyApi, code);
+        LoginHandler loginHandler = new LoginHandler(spotifyApi);
+        TopArtistsHandler topArtistsHandler = new TopArtistsHandler(spotifyApi);
 
         Spark.path("/api", () -> {
-            Spark.get("/get-user-code", GetUserCodeHandler);
-            Spark.get("/login", LoginHandler);
+            Spark.get("/get-user-code", getUserCodeHandler);
+            Spark.get("/login", loginHandler);
+            Spark.get("/top-artists", topArtistsHandler);
         });
 
         Spark.init();

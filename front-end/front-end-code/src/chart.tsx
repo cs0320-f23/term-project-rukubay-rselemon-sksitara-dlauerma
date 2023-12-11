@@ -1,10 +1,11 @@
-//import React from "react";
+import React from "react";
 import Chart from "chart.js/auto";
 import "./styles/index.css";
 
 export default function ListenChart() {
   // all the shared stated properties that we will need for the REPL
   const canvas = document.getElementById("myChart") as HTMLCanvasElement | null;
+  const mockMinutes = [50, 324, 78, 56, 9, 17, 48];
 
   if (canvas) {
     const ctx = canvas.getContext("2d");
@@ -24,7 +25,7 @@ export default function ListenChart() {
           datasets: [
             {
               label: "# of Votes",
-              data: [12, 19, 3, 5, 2, 3, 9],
+              data: mockMinutes,
               borderWidth: 1,
             },
           ],

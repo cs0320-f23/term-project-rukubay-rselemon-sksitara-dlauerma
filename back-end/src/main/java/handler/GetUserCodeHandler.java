@@ -32,8 +32,6 @@ public class GetUserCodeHandler implements Route {
     }
     public Object handle(Request request, Response response) {
 
-        System.out.println(request);
-
         this.code = request.queryParams("code");
 
         Moshi moshi = new Moshi.Builder().build();
@@ -48,7 +46,7 @@ public class GetUserCodeHandler implements Route {
             AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
             this.spotifyApi.setAccessToken(authorizationCodeCredentials.getAccessToken());
             this.spotifyApi.setRefreshToken(authorizationCodeCredentials.getRefreshToken());
-            System.out.println("Expires in: " + authorizationCodeCredentials.getExpiresIn());
+            responseMap.put("expires-in", authorizationCodeCredentials.getExpiresIn());
             responseMap.put("result", "success");
 
         } catch (IOException | SpotifyWebApiException | ParseException e) {

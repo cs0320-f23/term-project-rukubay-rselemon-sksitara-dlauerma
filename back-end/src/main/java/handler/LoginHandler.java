@@ -18,7 +18,7 @@ import java.util.Map;
  * Fetches the redirect URI to get user credentials
  */
 public class LoginHandler implements Route {
-    public final SpotifyApi spotifyApi;
+    private final SpotifyApi spotifyApi;
 
     public LoginHandler(SpotifyApi spotifyApi) {
         this.spotifyApi = spotifyApi;
@@ -32,6 +32,7 @@ public class LoginHandler implements Route {
 
         //fetch the uri which redirects the user to login page
         AuthorizationCodeUriRequest authorizationCodeUriRequest = this.spotifyApi.authorizationCodeUri()
+                .scope("user-top-read, user-read-email, user-read-private")
                 .build();
         URI uri = authorizationCodeUriRequest.execute();
         responseMap.put("uri", uri.toString());

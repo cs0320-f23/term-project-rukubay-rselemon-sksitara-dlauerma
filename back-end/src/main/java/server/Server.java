@@ -52,7 +52,6 @@ public class Server {
         });
 
 
-
         GetUserCodeHandler getUserCodeHandler = new GetUserCodeHandler(spotifyApi, code);
         LoginHandler loginHandler = new LoginHandler(spotifyApi);
         TopArtistsHandler topArtistsHandler = new TopArtistsHandler(spotifyApi);

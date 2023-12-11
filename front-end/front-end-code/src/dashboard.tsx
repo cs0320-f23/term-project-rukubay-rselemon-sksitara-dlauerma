@@ -1,45 +1,22 @@
-import React, { useEffect } from "react";
-import Chart from "chart.js/auto";
-import "./styles/index.css";
+//import React from "react";
+import "../styles/App.css";
+import ListenChart from "./chart";
 
-const App = () => {
-  useEffect(() => {
-    const canvas = document.getElementById(
-      "myChart"
-    ) as HTMLCanvasElement | null;
-
-    if (canvas) {
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-            datasets: [
-              {
-                label: "# of Votes",
-                data: [12, 19, 3, 5, 2, 3],
-                borderWidth: 1,
-              },
-            ],
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true,
-              },
-            },
-          },
-        });
-      }
-    }
-  }, []); // Empty dependency array to run the effect only once
-
+/**
+ * This is the highest level component!
+ */
+function Dashboard() {
   return (
-    <div>
-      <canvas id="myChart"></canvas>
+    <div className="Dashboard" aria-label="Dashboard Page">
+      <p className="Dashboard-header" aria-label="Application Header">
+        <h1 aria-label="Main Title"> Listen Data </h1>
+      </p>
+      <ListenChart aria-label="Chart Section" />
+      <h2> Top Genre: </h2>
+      <h2> Top Artist: </h2>
+      <h2> Top Song: </h2>
     </div>
   );
-};
+}
 
-export default App;
+export default Dashboard;

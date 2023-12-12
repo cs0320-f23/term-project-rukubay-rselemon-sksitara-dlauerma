@@ -24,7 +24,11 @@ public class ourUser {
   public void setTopArtists(List<Artist> artists) {
     topArtists = artists;
   }
-  public List<Track> getTopSongs() {
+  public List<Track> getTopTracks() {
     return topSongs;
+  }
+
+  public void setTopTracks(List<Track> topSongs) {
+    topSongs = topSongs;
   }
 }

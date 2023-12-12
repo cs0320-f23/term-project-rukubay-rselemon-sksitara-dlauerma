@@ -4,19 +4,16 @@ import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
 import java.util.List;
-import org.apache.hc.core5.http.ParseException;
 import se.michaelthelin.spotify.SpotifyApi;
-import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
-import se.michaelthelin.spotify.model_objects.specification.User;
+import se.michaelthelin.spotify.model_objects.specification.Track;
 import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopArtistsRequest;
-import se.michaelthelin.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
+import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopTracksRequest;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,8 +39,8 @@ public class MakeUserHandler implements Route {
         String password = request.queryParams("password");
         ourUser newUser = new ourUser(username, password);
 
-        GetCurrentUsersProfileRequest getCurrentUsersProfileRequest = spotifyApi.getCurrentUsersProfile()
-                .build();
+//        GetCurrentUsersProfileRequest getCurrentUsersProfileRequest = spotifyApi.getCurrentUsersProfile()
+//                .build();
 //        try {
 //            User user = getCurrentUsersProfileRequest.execute();
 //            String spotifyUsername = user.getDisplayName();
@@ -55,15 +52,30 @@ public class MakeUserHandler implements Route {
 
         GetUsersTopArtistsRequest getUsersTopArtistsRequest = this.spotifyApi.getUsersTopArtists()
                 .time_range("medium_term")
-                .limit(10)
+                .limit(50)
                 .build();
 
         try {
             Paging<Artist> artists = getUsersTopArtistsRequest.execute();
             newUser.setTopArtists(List.of(artists.getItems()));
-            System.out.println(newUser.getTopArtists().get(0).getName());
-            responseMap.put("artists", artists.getItems());
+            //System.out.println(newUser.getTopArtists().get(0).getName());
+            //responseMap.put("artists", artists.getItems());
             responseMap.put("result", "success");
+        } catch (Exception e) {
+            responseMap.put("result", "failure");
+            e.printStackTrace();
+        }
+
+        GetUsersTopTracksRequest getUsersTopTracksRequest = this.spotifyApi.getUsersTopTracks()
+                .time_range("medium_term")
+                .limit(50)
+                .offset(0)
+                .build();
+
+        try {
+            Paging<Track> tracks = getUsersTopTracksRequest.execute();
+            newUser.setTopTracks(List.of(tracks.getItems()));
+            System.out.println(newUser.getTopArtists().get(0).getName());
         } catch (Exception e) {
             responseMap.put("result", "failure");
             e.printStackTrace();

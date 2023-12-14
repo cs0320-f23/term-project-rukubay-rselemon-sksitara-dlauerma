@@ -1,8 +1,8 @@
 import React from "react";
-import "../styles/App.css";
-import GenreDropdown from "./dropdown";
+import GenreDropdown from "./dropdown.tsx";
 
 function Dashboard() {
+  console.log("got here");
   return (
     <div className="Dashboard" aria-label="Dashboard Page">
       <p className="Dashboard-header" aria-label="Application Header">

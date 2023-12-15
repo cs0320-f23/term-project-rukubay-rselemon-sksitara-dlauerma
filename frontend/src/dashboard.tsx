@@ -17,3 +17,8 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+// click sign up, fetch http://localhost:3232/api/login
+// redirect to uri
+// check if result is success -> dashboard
+// if expires -> say expired

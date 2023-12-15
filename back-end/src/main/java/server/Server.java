@@ -1,8 +1,17 @@
 package server;
 
+<<<<<<< Updated upstream
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import datasource.MockCensusDatasource;
+=======
+import handler.ComputeStatisticsHandler;
+import handler.GetUserCodeHandler;
+import handler.LoginHandler;
+import handler.MakeUserHandler;
+import handler.TopArtistsHandler;
+import java.util.Map;
+>>>>>>> Stashed changes
 import spark.Spark;
 import datasource.APICensusDatasource;
 import handler.BroadbandHandler;
@@ -20,10 +29,35 @@ import static spark.Spark.after;
  * This class makes the server which makes all the handlers related to the project
  */
 public class Server {
+<<<<<<< Updated upstream
     private static ArrayList<List<String>> loadedCSV;
     private static List<String> header;
     private static Boolean hasHeader;
     private static Boolean isLoaded;
+=======
+    private static Map<String, ourUser> users;
+    public static Map<String, ourUser> getUsers() {
+        return users;
+    }
+
+    private void setUsers(Map<String, ourUser> users) {
+        this.users = users;
+    }
+
+    private static final String clientId = spotifyKeys.CLIENT_ID;
+
+    private static final String clientSecret = spotifyKeys.CLIENT_SECRET;
+
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:3232/api/get-user-code");
+
+    private String code = "";
+
+    private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
+            .setClientId(clientId)
+            .setClientSecret(clientSecret)
+            .setRedirectUri(redirectUri)
+            .build();
+>>>>>>> Stashed changes
 
     /**
      * This method constructs the server and instantiates the instance variables and the port number. It also makes all
@@ -46,6 +80,7 @@ public class Server {
         LoadHandler loadHandler = new LoadHandler();
         Spark.get("loadcsv", loadHandler);
 
+<<<<<<< Updated upstream
         ViewHandler viewHandler = new ViewHandler();
         Spark.get("viewcsv", viewHandler);
 
@@ -59,6 +94,21 @@ public class Server {
 
         BroadbandHandler broadbandHandler = new BroadbandHandler(cache, new APICensusDatasource());
         Spark.get("broadband", broadbandHandler);
+=======
+        GetUserCodeHandler getUserCodeHandler = new GetUserCodeHandler(spotifyApi, code);
+        LoginHandler loginHandler = new LoginHandler(spotifyApi);
+        TopArtistsHandler topArtistsHandler = new TopArtistsHandler(spotifyApi);
+        MakeUserHandler makeUserHandler = new MakeUserHandler(spotifyApi);
+        ComputeStatisticsHandler computeStatisticsHandler = new ComputeStatisticsHandler();
+
+        Spark.path("/api", () -> {
+            Spark.get("/get-user-code", getUserCodeHandler);
+            Spark.get("/login", loginHandler);
+            Spark.get("/top-artists", topArtistsHandler);
+            Spark.get("/make-user", makeUserHandler);
+            Spark.get("/compute-statistics", computeStatisticsHandler);
+        });
+>>>>>>> Stashed changes
 
         Spark.init();
         Spark.awaitInitialization();

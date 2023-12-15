@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 package statistics;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Statistics{
@@ -39,7 +37,7 @@ public class Statistics{
     //note: add sorting functionality here
   }
 }
-=======
+
 //package statistics;
 //
 //public class Statistics{
@@ -61,4 +59,3 @@ public class Statistics{
 //    return sum;
 //  }
 //}
->>>>>>> spotify-api

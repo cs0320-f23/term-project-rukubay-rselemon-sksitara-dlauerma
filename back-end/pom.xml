@@ -52,6 +52,12 @@
        -->
 
         <dependency>
+            <groupId>se.michaelthelin.spotify</groupId>
+            <artifactId>spotify-web-api-java</artifactId>
+            <version>8.3.4</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.squareup.moshi</groupId>
             <artifactId>moshi</artifactId>
             <version>1.13.0</version>

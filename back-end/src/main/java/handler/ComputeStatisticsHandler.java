@@ -55,16 +55,20 @@ public class ComputeStatisticsHandler implements Route {
     if (feature.equals("artists")) {
       Statistics<Artist> stats = new Statistics<>();
       for (Map.Entry<String, ourUser> otherUser : Server.getUsers().entrySet()) {
-        float overlap = stats.computeOverlap(user.getTopArtists(timeRange),
-            otherUser.getValue().getTopArtists(timeRange));
-        overlaps.put(otherUser.getKey(), overlap);
+        if (!otherUser.getKey().equals(username)) {
+          float overlap = stats.computeOverlap(user.getTopArtists(timeRange),
+              otherUser.getValue().getTopArtists(timeRange));
+          overlaps.put(otherUser.getKey(), overlap);
+        }
       }
     } else if (feature.equals("songs")) {
-      Statistics<Artist> stats = new Statistics<>();
+      Statistics<Track> stats = new Statistics<>();
       for (Map.Entry<String, ourUser> otherUser : Server.getUsers().entrySet()) {
-        float overlap = stats.computeOverlap(user.getTopArtists(timeRange),
-            otherUser.getValue().getTopArtists(timeRange));
-        overlaps.put(otherUser.getKey(), overlap);
+        if (!otherUser.getKey().equals(username)) {
+          float overlap = stats.computeOverlap(user.getTopTracks(timeRange),
+              otherUser.getValue().getTopTracks(timeRange));
+          overlaps.put(otherUser.getKey(), overlap);
+        }
       }
     } else if (feature.equals("genres")) {
       //TODO: genre matching code

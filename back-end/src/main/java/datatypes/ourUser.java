@@ -30,58 +30,34 @@ public class ourUser {
     return username;
   }
 
-  public List<Artist> getTopArtistsShort() {
-    return topArtistsShort;
+  public List<Artist> getTopArtists(int timeRange) {
+    if (timeRange == 0) return topArtistsShort;
+    else if (timeRange == 1) return topArtistsMed;
+    else return topArtistsLong;
   }
-  public void setTopArtistsShort(List<Artist> artists) {
-    topArtistsShort = artists;
+  public void setTopArtists(List<Artist> artists, int timeRange) {
+    if (timeRange == 0) topArtistsShort = artists;
+    else if (timeRange == 1) topArtistsMed = artists;
+    else topArtistsLong = artists;
   }
-  public List<Artist> getTopArtistsMed() {
-    return topArtistsMed;
+  public List<Track> getTopTracks(int timeRange) {
+    if (timeRange == 0) return topSongsShort;
+    else if (timeRange == 1) return topSongsMed;
+    else return topSongsLong;
   }
-  public void setTopArtistsMed(List<Artist> artists) {
-    topArtistsMed = artists;
+  public void setTopTracks(List<Track> songs, int timeRange) {
+    if (timeRange == 0) topSongsShort = songs;
+    else if (timeRange == 1) topSongsMed = songs;
+    else topSongsLong = songs;
   }
-  public List<Artist> getTopArtistsLong() {
-    return topArtistsLong;
+  public HashMap<String, Integer> getTopGenre(int timeRange) {
+    if (timeRange == 0) return topGenresShort;
+    else if (timeRange == 1) return topGenresMed;
+    else return topGenresLong;
   }
-  public void setTopArtistsLong(List<Artist> artists) {
-    topArtistsLong = artists;
-  }
-  public List<Track> getTopTracksShort() {
-    return topSongsShort;
-  }
-  public void setTopTracksShort(List<Track> songs) {
-    topSongsShort = songs;
-  }
-  public List<Track> getTopTracksMed() {
-    return topSongsMed;
-  }
-  public void setTopTracksMed(List<Track> songs) {
-    topSongsMed = songs;
-  }
-  public List<Track> getTopTracksLong() {
-    return topSongsLong;
-  }
-  public void setTopTracksLong(List<Track> songs) {
-    topSongsLong = songs;
-  }
-  public HashMap<String, Integer> getTopGenreShort() {
-    return topGenresShort;
-  }
-  public void setTopGenreShort(HashMap<String, Integer> genres) {
-    topGenresShort = genres;
-  }
-  public HashMap<String, Integer> getTopGenreMed() {
-    return topGenresMed;
-  }
-  public void setTopGenreMed(HashMap<String, Integer> genres) {
-    topGenresMed = genres;
-  }
-  public HashMap<String, Integer> getTopGenreLong() {
-    return topGenresLong;
-  }
-  public void setTopGenreLong(HashMap<String, Integer> genres) {
-    topGenresLong = genres;
+  public void setTopGenre(HashMap<String, Integer> genres, int timeRange) {
+    if (timeRange == 0) topGenresShort = genres;
+    else if (timeRange == 1) topGenresShort = genres;
+    else topGenresShort = genres;
   }
 }

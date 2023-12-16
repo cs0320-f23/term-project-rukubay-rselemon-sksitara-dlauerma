@@ -41,26 +41,26 @@ public class MakeUserHandler implements Route {
 
         // create the requests for short, medium, and long term
         GetUsersTopArtistsRequest getUsersTopArtistsRequestShort = this.spotifyApi.getUsersTopArtists()
-                .time_range("short_term")
-                .limit(50)
-                .build();
-        GetUsersTopArtistsRequest getUsersTopArtistsRequestMed = this.spotifyApi.getUsersTopArtists()
-                .time_range("medium_term")
-                .limit(50)
-                .build();
-        GetUsersTopArtistsRequest getUsersTopArtistsRequestLong = this.spotifyApi.getUsersTopArtists()
-                .time_range("long_term")
-                .limit(50)
-                .build();
+            .time_range("medium_term")
+            .limit(50)
+            .build();
+//        GetUsersTopArtistsRequest getUsersTopArtistsRequestMed = this.spotifyApi.getUsersTopArtists()
+//                .time_range("medium_term")
+//                .limit(50)
+//                .build();
+//        GetUsersTopArtistsRequest getUsersTopArtistsRequestLong = this.spotifyApi.getUsersTopArtists()
+//                .time_range("long_term")
+//                .limit(50)
+//                .build();
 
         // fetch all of the artists and store them in the user's profile
         try {
             Paging<Artist> artistsShort = getUsersTopArtistsRequestShort.execute();
-            newUser.setTopArtistsShort(List.of(artistsShort.getItems()));
-            Paging<Artist> artistsMed = getUsersTopArtistsRequestMed.execute();
-            newUser.setTopArtistsMed(List.of(artistsMed.getItems()));
-            Paging<Artist> artistsLong = getUsersTopArtistsRequestLong.execute();
-            newUser.setTopArtistsLong(List.of(artistsLong.getItems()));
+            newUser.setTopArtists(List.of(artistsShort.getItems()), 0);
+//            Paging<Artist> artistsMed = getUsersTopArtistsRequestMed.execute();
+//            newUser.setTopArtists(List.of(artistsMed.getItems()), 1);
+//            Paging<Artist> artistsLong = getUsersTopArtistsRequestLong.execute();
+//            newUser.setTopArtists(List.of(artistsLong.getItems()),2);
             responseMap.put("result", "success");
         } catch (Exception e) {
             responseMap.put("result", "failure");
@@ -69,60 +69,60 @@ public class MakeUserHandler implements Route {
 
         // setting the track requests
         GetUsersTopTracksRequest getUsersTopTracksRequestShort = this.spotifyApi.getUsersTopTracks()
-                .time_range("short_term")
-                .limit(50)
-                .offset(0)
-                .build();
-        GetUsersTopTracksRequest getUsersTopTracksRequestMed = this.spotifyApi.getUsersTopTracks()
-                .time_range("medium_term")
-                .limit(50)
-                .offset(0)
-                .build();
-        GetUsersTopTracksRequest getUsersTopTracksRequestLong = this.spotifyApi.getUsersTopTracks()
-                .time_range("long_term")
-                .limit(50)
-                .offset(0)
-                .build();
+            .time_range("short_term")
+            .limit(50)
+            .offset(0)
+            .build();
+//        GetUsersTopTracksRequest getUsersTopTracksRequestMed = this.spotifyApi.getUsersTopTracks()
+//                .time_range("medium_term")
+//                .limit(50)
+//                .offset(0)
+//                .build();
+//        GetUsersTopTracksRequest getUsersTopTracksRequestLong = this.spotifyApi.getUsersTopTracks()
+//                .time_range("long_term")
+//                .limit(50)
+//                .offset(0)
+//                .build();
 
         // executing the requests and storing them
         try {
             Paging<Track> tracksShort = getUsersTopTracksRequestShort.execute();
-            newUser.setTopTracksShort(List.of(tracksShort.getItems()));
-            Paging<Track> tracksMed = getUsersTopTracksRequestMed.execute();
-            newUser.setTopTracksMed(List.of(tracksMed.getItems()));
-            Paging<Track> tracksLong = getUsersTopTracksRequestLong.execute();
-            newUser.setTopTracksLong(List.of(tracksLong.getItems()));
+            newUser.setTopTracks(List.of(tracksShort.getItems()), 0);
+//            Paging<Track> tracksMed = getUsersTopTracksRequestMed.execute();
+//            newUser.setTopTracks(List.of(tracksMed.getItems()), 1);
+//            Paging<Track> tracksLong = getUsersTopTracksRequestLong.execute();
+//            newUser.setTopTracks(List.of(tracksLong.getItems()), 2);
         } catch (Exception e) {
             responseMap.put("result", "failure");
             e.printStackTrace();
         }
 
         // creating maps of top genres for short term
-        newUser.setTopGenreShort(new HashMap<>());
-        for (Artist artist : newUser.getTopArtistsShort()) {
+        newUser.setTopGenre(new HashMap<>(), 0);
+        for (Artist artist : newUser.getTopArtists(0)) {
             for (String genre : artist.getGenres()) {
-                int count = newUser.getTopGenreShort().getOrDefault(genre, 0);
-                newUser.getTopGenreShort().put(genre, count);
+                int count = newUser.getTopGenre(0).getOrDefault(genre, 0);
+                newUser.getTopGenre(0).put(genre, count);
             }
         }
 
         // repeat for medium term
-        newUser.setTopGenreMed(new HashMap<>());
-        for (Artist artist : newUser.getTopArtistsMed()) {
-            for (String genre : artist.getGenres()) {
-                int count = newUser.getTopGenreMed().getOrDefault(genre, 0);
-                newUser.getTopGenreMed().put(genre, count);
-            }
-        }
-
-        // once more for long term
-        newUser.setTopGenreLong(new HashMap<>());
-        for (Artist artist : newUser.getTopArtistsLong()) {
-            for (String genre : artist.getGenres()) {
-                int count = newUser.getTopGenreLong().getOrDefault(genre, 0);
-                newUser.getTopGenreLong().put(genre, count);
-            }
-        }
+//        newUser.setTopGenre(new HashMap<>(), 1);
+//        for (Artist artist : newUser.getTopArtists(1)) {
+//            for (String genre : artist.getGenres()) {
+//                int count = newUser.getTopGenre(1).getOrDefault(genre, 0);
+//                newUser.getTopGenre(1).put(genre, count);
+//            }
+//        }
+//
+//        // once more for long term
+//        newUser.setTopGenre(new HashMap<>(), 2);
+//        for (Artist artist : newUser.getTopArtists(2)) {
+//            for (String genre : artist.getGenres()) {
+//                int count = newUser.getTopGenre(2).getOrDefault(genre, 0);
+//                newUser.getTopGenre(2).put(genre, count);
+//            }
+//        }
 
         return adapter.toJson(responseMap);
     }

@@ -1,21 +1,16 @@
-//package statistics;
-//
-//public class Statistics{
-//  public float computeOverlap(List<String> user1, List<String> user2){
-//    float sum = 0;
-//    for (int i = 0; i < user1.size(); i++){
-//      if (user2.contains(user1.get(i))){
-//        sum++;
-//      }
-//    }
-//    return sum / user1.size();
-//  }
-//
-//  public float computeWeightedMatch(List<float> overlaps, List<float> weights){
-//    float sum = 0;
-//    for (int i = 0; i < overlaps.size(); i++){
-//      sum += overlaps.get(i) * weights.get(i);
-//    }
-//    return sum;
-//  }
-//}
+package statistics;
+import java.util.List;
+import se.michaelthelin.spotify.model_objects.specification.Artist;
+import se.michaelthelin.spotify.model_objects.specification.Track;
+public class Statistics<T> {
+  public float computeOverlap(List<T> user1, List<T> user2) {
+    float sum = 0;
+    for (T a : user1) {
+      if (user2.contains(a)){
+        sum++;
+        user2.remove(a);
+      }
+    }
+    return (!user1.isEmpty() && !user2.isEmpty()) ? sum / user1.size() : 0;
+  }
+}

@@ -57,7 +57,7 @@ public class ourUser {
   }
   public void setTopGenre(HashMap<String, Integer> genres, int timeRange) {
     if (timeRange == 0) topGenresShort = genres;
-    else if (timeRange == 1) topGenresShort = genres;
-    else topGenresShort = genres;
+    else if (timeRange == 1) topGenresMed = genres;
+    else topGenresLong = genres;
   }
 }

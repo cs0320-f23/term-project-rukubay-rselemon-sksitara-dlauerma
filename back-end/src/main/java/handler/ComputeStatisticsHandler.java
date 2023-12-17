@@ -39,7 +39,6 @@ public class ComputeStatisticsHandler implements Route {
     Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
     JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
     Map<String, Object> responseMap = new HashMap<>();
-
     feature = request.queryParams("compare-by");
     username = request.queryParams("username");
     switch (request.queryParams("time-range")) {
@@ -57,7 +56,7 @@ public class ComputeStatisticsHandler implements Route {
       for (Map.Entry<String, ourUser> otherUser : Server.getUsers().entrySet()) {
         if (!otherUser.getKey().equals(username)) {
           float overlap = stats.computeOverlap(user.getTopArtists(timeRange),
-              otherUser.getValue().getTopArtists(timeRange));
+                  otherUser.getValue().getTopArtists(timeRange));
           overlaps.put(otherUser.getKey(), overlap);
         }
       }
@@ -66,13 +65,14 @@ public class ComputeStatisticsHandler implements Route {
       for (Map.Entry<String, ourUser> otherUser : Server.getUsers().entrySet()) {
         if (!otherUser.getKey().equals(username)) {
           float overlap = stats.computeOverlap(user.getTopTracks(timeRange),
-              otherUser.getValue().getTopTracks(timeRange));
+                  otherUser.getValue().getTopTracks(timeRange));
           overlaps.put(otherUser.getKey(), overlap);
         }
       }
     } else if (feature.equals("genres")) {
       //TODO: genre matching code
     }
+
     responseMap.put("result", "success");
     responseMap.put("overlaps", overlaps);
     return adapter.toJson(responseMap);

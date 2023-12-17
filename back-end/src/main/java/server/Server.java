@@ -5,6 +5,8 @@ import handler.GetUserCodeHandler;
 import handler.LoginHandler;
 import handler.MakeUserHandler;
 import handler.TopArtistsHandler;
+
+import java.util.HashMap;
 import java.util.Map;
 import spark.Spark;
 
@@ -20,13 +22,12 @@ import static spark.Spark.after;
  * This class makes the server which makes all the handlers related to the project
  */
 public class Server {
-    public static Map<String, ourUser> users;
+    public static Map<String, ourUser> users = new HashMap<>();
     public static Map<String, ourUser> getUsers() {
         return users;
     }
-
-    public void setUsers(Map<String, ourUser> usrs) {
-        users = usrs;
+    public static void addUser(String name, ourUser user) {
+        users.put(name, user);
     }
 
     private static final String clientId = spotifyKeys.CLIENT_ID;

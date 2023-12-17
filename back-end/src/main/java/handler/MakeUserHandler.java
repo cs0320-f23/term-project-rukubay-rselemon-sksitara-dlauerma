@@ -3,13 +3,21 @@ package handler;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
+
+import java.io.IOException;
 import java.util.List;
+
+import org.apache.hc.core5.http.ParseException;
 import se.michaelthelin.spotify.SpotifyApi;
+import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.model_objects.specification.Track;
+import se.michaelthelin.spotify.model_objects.specification.User;
 import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopArtistsRequest;
 import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopTracksRequest;
+import se.michaelthelin.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
+import server.Server;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -39,28 +47,39 @@ public class MakeUserHandler implements Route {
         String password = request.queryParams("password");
         ourUser newUser = new ourUser(username, password);
 
+//        GetCurrentUsersProfileRequest getCurrentUsersProfileRequest = spotifyApi.getCurrentUsersProfile()
+//                .build();
+//        String spotifyUsername = "";
+//        try {
+//            User user = getCurrentUsersProfileRequest.execute();
+//            spotifyUsername = user.getDisplayName();
+//
+//        } catch (IOException | SpotifyWebApiException | ParseException e) {
+//            e.printStackTrace();
+//        }
+
         // create the requests for short, medium, and long term
         GetUsersTopArtistsRequest getUsersTopArtistsRequestShort = this.spotifyApi.getUsersTopArtists()
-            .time_range("medium_term")
-            .limit(50)
-            .build();
-//        GetUsersTopArtistsRequest getUsersTopArtistsRequestMed = this.spotifyApi.getUsersTopArtists()
-//                .time_range("medium_term")
-//                .limit(50)
-//                .build();
-//        GetUsersTopArtistsRequest getUsersTopArtistsRequestLong = this.spotifyApi.getUsersTopArtists()
-//                .time_range("long_term")
-//                .limit(50)
-//                .build();
+                .time_range("short_term")
+                .limit(50)
+                .build();
+        GetUsersTopArtistsRequest getUsersTopArtistsRequestMed = this.spotifyApi.getUsersTopArtists()
+                .time_range("medium_term")
+                .limit(50)
+                .build();
+        GetUsersTopArtistsRequest getUsersTopArtistsRequestLong = this.spotifyApi.getUsersTopArtists()
+                .time_range("long_term")
+                .limit(50)
+                .build();
 
         // fetch all of the artists and store them in the user's profile
         try {
             Paging<Artist> artistsShort = getUsersTopArtistsRequestShort.execute();
             newUser.setTopArtists(List.of(artistsShort.getItems()), 0);
-//            Paging<Artist> artistsMed = getUsersTopArtistsRequestMed.execute();
-//            newUser.setTopArtists(List.of(artistsMed.getItems()), 1);
-//            Paging<Artist> artistsLong = getUsersTopArtistsRequestLong.execute();
-//            newUser.setTopArtists(List.of(artistsLong.getItems()),2);
+            Paging<Artist> artistsMed = getUsersTopArtistsRequestMed.execute();
+            newUser.setTopArtists(List.of(artistsMed.getItems()), 1);
+            Paging<Artist> artistsLong = getUsersTopArtistsRequestLong.execute();
+            newUser.setTopArtists(List.of(artistsLong.getItems()),2);
             responseMap.put("result", "success");
         } catch (Exception e) {
             responseMap.put("result", "failure");
@@ -69,33 +88,34 @@ public class MakeUserHandler implements Route {
 
         // setting the track requests
         GetUsersTopTracksRequest getUsersTopTracksRequestShort = this.spotifyApi.getUsersTopTracks()
-            .time_range("short_term")
-            .limit(50)
-            .offset(0)
-            .build();
-//        GetUsersTopTracksRequest getUsersTopTracksRequestMed = this.spotifyApi.getUsersTopTracks()
-//                .time_range("medium_term")
-//                .limit(50)
-//                .offset(0)
-//                .build();
-//        GetUsersTopTracksRequest getUsersTopTracksRequestLong = this.spotifyApi.getUsersTopTracks()
-//                .time_range("long_term")
-//                .limit(50)
-//                .offset(0)
-//                .build();
+                .time_range("short_term")
+                .limit(50)
+                .offset(0)
+                .build();
+        GetUsersTopTracksRequest getUsersTopTracksRequestMed = this.spotifyApi.getUsersTopTracks()
+                .time_range("medium_term")
+                .limit(50)
+                .offset(0)
+                .build();
+        GetUsersTopTracksRequest getUsersTopTracksRequestLong = this.spotifyApi.getUsersTopTracks()
+                .time_range("long_term")
+                .limit(50)
+                .offset(0)
+                .build();
 
         // executing the requests and storing them
         try {
             Paging<Track> tracksShort = getUsersTopTracksRequestShort.execute();
             newUser.setTopTracks(List.of(tracksShort.getItems()), 0);
-//            Paging<Track> tracksMed = getUsersTopTracksRequestMed.execute();
-//            newUser.setTopTracks(List.of(tracksMed.getItems()), 1);
-//            Paging<Track> tracksLong = getUsersTopTracksRequestLong.execute();
-//            newUser.setTopTracks(List.of(tracksLong.getItems()), 2);
+            Paging<Track> tracksMed = getUsersTopTracksRequestMed.execute();
+            newUser.setTopTracks(List.of(tracksMed.getItems()), 1);
+            Paging<Track> tracksLong = getUsersTopTracksRequestLong.execute();
+            newUser.setTopTracks(List.of(tracksLong.getItems()), 2);
         } catch (Exception e) {
             responseMap.put("result", "failure");
             e.printStackTrace();
         }
+
 
         // creating maps of top genres for short term
         newUser.setTopGenre(new HashMap<>(), 0);
@@ -107,22 +127,24 @@ public class MakeUserHandler implements Route {
         }
 
         // repeat for medium term
-//        newUser.setTopGenre(new HashMap<>(), 1);
-//        for (Artist artist : newUser.getTopArtists(1)) {
-//            for (String genre : artist.getGenres()) {
-//                int count = newUser.getTopGenre(1).getOrDefault(genre, 0);
-//                newUser.getTopGenre(1).put(genre, count);
-//            }
-//        }
-//
-//        // once more for long term
-//        newUser.setTopGenre(new HashMap<>(), 2);
-//        for (Artist artist : newUser.getTopArtists(2)) {
-//            for (String genre : artist.getGenres()) {
-//                int count = newUser.getTopGenre(2).getOrDefault(genre, 0);
-//                newUser.getTopGenre(2).put(genre, count);
-//            }
-//        }
+        newUser.setTopGenre(new HashMap<>(), 1);
+        for (Artist artist : newUser.getTopArtists(1)) {
+            for (String genre : artist.getGenres()) {
+                int count = newUser.getTopGenre(1).getOrDefault(genre, 0);
+                newUser.getTopGenre(1).put(genre, count);
+            }
+        }
+
+        // once more for long term
+        newUser.setTopGenre(new HashMap<>(), 2);
+        for (Artist artist : newUser.getTopArtists(2)) {
+            for (String genre : artist.getGenres()) {
+                int count = newUser.getTopGenre(2).getOrDefault(genre, 0);
+                newUser.getTopGenre(2).put(genre, count);
+            }
+        }
+
+        Server.addUser(username, newUser);
 
         return adapter.toJson(responseMap);
     }

@@ -68,8 +68,15 @@ public class ComputeStatisticsHandler implements Route {
           }
         }
         case "genres" -> {
+          Statistics<String> stats = new Statistics<>();
+          for (Map.Entry<String, ourUser> otherUser : Server.getUsers().entrySet()) {
+            if (!otherUser.getKey().equals(username)) {
+              float overlap = stats.computeOverlap(user.getTopGenre(timeRange),
+                  otherUser.getValue().getTopGenre(timeRange));
+              overlaps.put(otherUser.getKey(), overlap);
+            }
+          }
         }
-        //TODO: genre matching code
       }
       responseMap.put("overlaps", overlaps);
       responseMap.put("result", "success");

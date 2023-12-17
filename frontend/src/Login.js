@@ -1,6 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+//const oAuthURI = "";
+
+async function getURI() {
+  return await fetch("http://localhost:3232/api/login")
+    .then((response) => response.json())
+    .then((json) => {
+      if (json["result"] == "success") {
+        return json["uri"];
+      } else {
+        return "";
+      }
+    });
+}
+
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,16 +48,23 @@ const Login = (props) => {
       setPasswordError("The password must be 8 characters or longer");
       return;
     } else {
-      navigate("/dashboard");
-    }
+      getURI().then((oAuthURI) => {
+        const redirectToOAuth = () => {
+          window.location.href =
+            oAuthURI + "?callback=http://your-app-callback-url";
+        };
 
-    // Authentication calls will be made here...
+        console.log("asdfghjkuyfye");
+        console.log(window.location.href);
+        //navigate(oAuthURI);
+      });
+    }
   };
 
   return (
     <div className={"mainContainer"}>
       <div className={"titleContainer"}>
-        <div>Login</div>
+        <div>Sign up</div>
       </div>
       <br />
       <div className={"inputContainer"}>
@@ -71,7 +92,7 @@ const Login = (props) => {
           className={"inputButton"}
           type="button"
           onClick={onButtonClick}
-          value={"Log in"}
+          value={"Sign up"}
         />
       </div>
     </div>

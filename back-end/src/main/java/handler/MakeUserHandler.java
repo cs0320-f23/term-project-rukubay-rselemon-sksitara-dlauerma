@@ -5,6 +5,7 @@ import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hc.core5.http.ParseException;
@@ -116,31 +117,11 @@ public class MakeUserHandler implements Route {
             e.printStackTrace();
         }
 
-
-        // creating maps of top genres for short term
-        newUser.setTopGenre(new HashMap<>(), 0);
-        for (Artist artist : newUser.getTopArtists(0)) {
-            for (String genre : artist.getGenres()) {
-                int count = newUser.getTopGenre(0).getOrDefault(genre, 0);
-                newUser.getTopGenre(0).put(genre, count);
-            }
-        }
-
-        // repeat for medium term
-        newUser.setTopGenre(new HashMap<>(), 1);
-        for (Artist artist : newUser.getTopArtists(1)) {
-            for (String genre : artist.getGenres()) {
-                int count = newUser.getTopGenre(1).getOrDefault(genre, 0);
-                newUser.getTopGenre(1).put(genre, count);
-            }
-        }
-
-        // once more for long term
-        newUser.setTopGenre(new HashMap<>(), 2);
-        for (Artist artist : newUser.getTopArtists(2)) {
-            for (String genre : artist.getGenres()) {
-                int count = newUser.getTopGenre(2).getOrDefault(genre, 0);
-                newUser.getTopGenre(2).put(genre, count);
+        // creating lists of top genres for short, medium, and long terms
+        for (int i = 0; i < 2; i++){
+            newUser.setTopGenre(new ArrayList<>(), i);
+            for (Artist artist : newUser.getTopArtists(i)) {
+                newUser.getTopGenre(i).addAll(List.of(artist.getGenres()));
             }
         }
 

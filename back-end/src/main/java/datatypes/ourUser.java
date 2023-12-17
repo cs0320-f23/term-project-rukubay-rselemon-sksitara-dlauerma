@@ -15,9 +15,9 @@ public class ourUser {
   private List<Track> topSongsShort;
   private List<Track> topSongsMed;
   private List<Track> topSongsLong;
-  private HashMap<String, Integer> topGenresShort;
-  private HashMap<String, Integer> topGenresMed;
-  private HashMap<String, Integer> topGenresLong;
+  private List<String> topGenresShort;
+  private List<String> topGenresMed;
+  private List<String> topGenresLong;
   public ourUser(String username, String password) {
     this.username = username;
     this.password = password;
@@ -50,12 +50,12 @@ public class ourUser {
     else if (timeRange == 1) topSongsMed = songs;
     else topSongsLong = songs;
   }
-  public HashMap<String, Integer> getTopGenre(int timeRange) {
+  public List<String> getTopGenre(int timeRange) {
     if (timeRange == 0) return topGenresShort;
     else if (timeRange == 1) return topGenresMed;
     else return topGenresLong;
   }
-  public void setTopGenre(HashMap<String, Integer> genres, int timeRange) {
+  public void setTopGenre(List<String> genres, int timeRange) {
     if (timeRange == 0) topGenresShort = genres;
     else if (timeRange == 1) topGenresMed = genres;
     else topGenresLong = genres;

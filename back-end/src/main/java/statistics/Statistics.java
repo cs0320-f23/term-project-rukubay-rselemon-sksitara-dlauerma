@@ -1,7 +1,5 @@
 package statistics;
 import java.util.List;
-import se.michaelthelin.spotify.model_objects.specification.Artist;
-import se.michaelthelin.spotify.model_objects.specification.Track;
 public class Statistics<T> {
   public float computeOverlap(List<T> user1, List<T> user2) {
     float sum = 0;

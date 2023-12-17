@@ -25,22 +25,20 @@ import statistics.Statistics;
  * Fetches the redirect URI to get user credentials
  */
 public class ComputeStatisticsHandler implements Route {
-  private String feature;
-  private String username;
-  private int timeRange;
-  private ourUser user;
-  private List<String> rawData;
-
-  private Map<String, Float> overlaps;
   public ComputeStatisticsHandler(){}
 
   public Object handle(Request request, Response response) {
+    Map<String, Float> overlaps = new HashMap<>();
+
     Moshi moshi = new Moshi.Builder().build();
     Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
     JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
     Map<String, Object> responseMap = new HashMap<>();
-    feature = request.queryParams("compare-by");
-    username = request.queryParams("username");
+
+    String feature = request.queryParams("compare-by");
+    String username = request.queryParams("username");
+
+    int timeRange;
     switch (request.queryParams("time-range")) {
       case "short":
         timeRange = 0;
@@ -49,7 +47,8 @@ public class ComputeStatisticsHandler implements Route {
       case "long":
         timeRange = 2;
     }
-    user = Server.getUsers().get(username);
+
+    ourUser user = Server.getUsers().get(username);
 
     if (feature.equals("artists")) {
       Statistics<Artist> stats = new Statistics<>();
@@ -72,9 +71,9 @@ public class ComputeStatisticsHandler implements Route {
     } else if (feature.equals("genres")) {
       //TODO: genre matching code
     }
-
-    responseMap.put("result", "success");
     responseMap.put("overlaps", overlaps);
+    responseMap.put("result", "success");
+
     return adapter.toJson(responseMap);
   }
 }

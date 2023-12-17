@@ -47,16 +47,16 @@ public class MakeUserHandler implements Route {
         String password = request.queryParams("password");
         ourUser newUser = new ourUser(username, password);
 
-//        GetCurrentUsersProfileRequest getCurrentUsersProfileRequest = spotifyApi.getCurrentUsersProfile()
-//                .build();
-//        String spotifyUsername = "";
-//        try {
-//            User user = getCurrentUsersProfileRequest.execute();
-//            spotifyUsername = user.getDisplayName();
-//
-//        } catch (IOException | SpotifyWebApiException | ParseException e) {
-//            e.printStackTrace();
-//        }
+        GetCurrentUsersProfileRequest getCurrentUsersProfileRequest = spotifyApi.getCurrentUsersProfile()
+                .build();
+        String spotifyUsername = "";
+        try {
+            User user = getCurrentUsersProfileRequest.execute();
+            spotifyUsername = user.getDisplayName();
+
+        } catch (IOException | SpotifyWebApiException | ParseException e) {
+            e.printStackTrace();
+        }
 
         // create the requests for short, medium, and long term
         GetUsersTopArtistsRequest getUsersTopArtistsRequestShort = this.spotifyApi.getUsersTopArtists()

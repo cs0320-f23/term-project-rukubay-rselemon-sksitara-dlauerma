@@ -11,6 +11,9 @@ public class Statistics<T> {
         user2.remove(a);
       }
     }
+
+
+
     return (!user1.isEmpty() && !user2.isEmpty()) ? sum / user1.size() : 0;
   }
 }

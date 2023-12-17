@@ -15,7 +15,8 @@
   justify-content: center;
 }
 
-.resultContainer, .historyItem { 
+.resultContainer,
+.historyItem {
   flex-direction: row;
   display: flex;
   width: 400px;
@@ -70,7 +71,7 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  background-color: #f2f8fd; 
+  background-color: #f2f8fd;
 }
 
 .Dashboard-header {
@@ -99,7 +100,7 @@ body {
   padding: 30px; /* Increased padding for more spacing */
   border: 1px solid #b5c9d4; /* Lighter border color */
   border-radius: 8px;
-  background-color: #ffffff; 
+  background-color: #ffffff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 600px;
@@ -120,7 +121,7 @@ body {
 .Musical-note {
   font-size: 36px;
   margin-right: 10px;
-  color: #1DB954; /* Green color inspired by Spotify */
+  color: #1db954; /* Green color inspired by Spotify */
 }
 .Headphones-icon {
   font-size: 450px;
@@ -129,10 +130,9 @@ body {
   bottom: -130px;
   transform: translateX(-50%); /* Center the headphones horizontally */
   left: 45%;
-  
+
   /* align-items: center; */
 }
-
 
 @media (min-width: 768px) {
   .Dashboard {
@@ -145,6 +145,6 @@ body {
   }
 
   .Content-block {
-    width: 100%; 
+    width: 100%;
   }
 }

@@ -1,9 +1,11 @@
 package statistics;
+import java.util.ArrayList;
 import java.util.List;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.Track;
 public class Statistics<T> {
-  public float computeOverlap(List<T> user1, List<T> user2) {
+  public float computeOverlap(List<T> user1, List<T> u2) {
+    List<T> user2 = new ArrayList<>(u2);
     float sum = 0;
     for (T a : user1) {
       if (user2.contains(a)){
@@ -11,9 +13,7 @@ public class Statistics<T> {
         user2.remove(a);
       }
     }
-
-
-
-    return (!user1.isEmpty() && !user2.isEmpty()) ? sum / user1.size() : 0;
+    // Jaccard similarity, A int B / A U B
+    return (!user1.isEmpty() && !user2.isEmpty()) ? sum / (user1.size() + user2.size()) : 0;
   }
 }

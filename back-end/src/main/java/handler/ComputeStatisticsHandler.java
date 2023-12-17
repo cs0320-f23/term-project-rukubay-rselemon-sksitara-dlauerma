@@ -28,52 +28,55 @@ public class ComputeStatisticsHandler implements Route {
   public ComputeStatisticsHandler(){}
 
   public Object handle(Request request, Response response) {
-    Map<String, Float> overlaps = new HashMap<>();
+      Map<String, Float> overlaps = new HashMap<>();
 
-    Moshi moshi = new Moshi.Builder().build();
-    Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
-    JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
-    Map<String, Object> responseMap = new HashMap<>();
+      Moshi moshi = new Moshi.Builder().build();
+      Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
+      JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
+      Map<String, Object> responseMap = new HashMap<>();
+    try {
 
-    String feature = request.queryParams("compare-by");
-    String username = request.queryParams("username");
+      String feature = request.queryParams("compare-by");
+      String username = request.queryParams("username");
 
-    int timeRange;
-    switch (request.queryParams("time-range")) {
-      case "short":
-        timeRange = 0;
-      case "medium":
-        timeRange = 1;
-      case "long":
-        timeRange = 2;
-    }
+      int timeRange = switch (request.queryParams("time-range")) {
+        case "short" -> 0;
+        case "medium" -> 1;
+        default -> 2;
+      };
 
-    ourUser user = Server.getUsers().get(username);
+      ourUser user = Server.getUsers().get(username);
 
-    if (feature.equals("artists")) {
-      Statistics<Artist> stats = new Statistics<>();
-      for (Map.Entry<String, ourUser> otherUser : Server.getUsers().entrySet()) {
-        if (!otherUser.getKey().equals(username)) {
-          float overlap = stats.computeOverlap(user.getTopArtists(timeRange),
-                  otherUser.getValue().getTopArtists(timeRange));
-          overlaps.put(otherUser.getKey(), overlap);
+      switch (feature) {
+        case "artists" -> {
+          Statistics<Artist> stats = new Statistics<>();
+          for (Map.Entry<String, ourUser> otherUser : Server.getUsers().entrySet()) {
+            if (!otherUser.getKey().equals(username)) {
+              float overlap = stats.computeOverlap(user.getTopArtists(timeRange),
+                      otherUser.getValue().getTopArtists(timeRange));
+              overlaps.put(otherUser.getKey(), overlap);
+            }
+          }
         }
-      }
-    } else if (feature.equals("songs")) {
-      Statistics<Track> stats = new Statistics<>();
-      for (Map.Entry<String, ourUser> otherUser : Server.getUsers().entrySet()) {
-        if (!otherUser.getKey().equals(username)) {
-          float overlap = stats.computeOverlap(user.getTopTracks(timeRange),
-                  otherUser.getValue().getTopTracks(timeRange));
-          overlaps.put(otherUser.getKey(), overlap);
+        case "songs" -> {
+          Statistics<Track> stats = new Statistics<>();
+          for (Map.Entry<String, ourUser> otherUser : Server.getUsers().entrySet()) {
+            if (!otherUser.getKey().equals(username)) {
+              float overlap = stats.computeOverlap(user.getTopTracks(timeRange),
+                      otherUser.getValue().getTopTracks(timeRange));
+              overlaps.put(otherUser.getKey(), overlap);
+            }
+          }
         }
+        case "genres" -> {
+        }
+        //TODO: genre matching code
       }
-    } else if (feature.equals("genres")) {
-      //TODO: genre matching code
+      responseMap.put("overlaps", overlaps);
+      responseMap.put("result", "success");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    responseMap.put("overlaps", overlaps);
-    responseMap.put("result", "success");
-
     return adapter.toJson(responseMap);
   }
 }

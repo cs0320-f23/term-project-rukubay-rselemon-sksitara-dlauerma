@@ -11,12 +11,12 @@ function GenreDropdown() {
 
   return (
     <div>
-      <h2>Dropdown</h2>
+      <h2>Your Top 10 generes</h2>
       <select value={selectedOption} onChange={handleSelectChange}>
         <option value="">Select an option</option>
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
+        <option value="option1">*Pop*</option>
+        <option value="option2">*Rock*</option>
+        <option value="option3">*Rap*</option>
       </select>
 
       <p>Selected Option: {selectedOption}</p>

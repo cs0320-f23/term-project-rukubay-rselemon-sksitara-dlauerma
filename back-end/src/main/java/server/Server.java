@@ -32,7 +32,7 @@ public class Server {
 
     private static final String clientSecret = spotifyKeys.CLIENT_SECRET;
 
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:3232/api/get-user-code");
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:3000/dashboard");
 
     private String code = "";
 

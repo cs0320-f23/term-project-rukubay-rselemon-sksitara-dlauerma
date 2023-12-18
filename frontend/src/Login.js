@@ -49,15 +49,11 @@ const Login = (props) => {
       return;
     } else {
       getURI().then((oAuthURI) => {
-        const redirectToOAuth = () => {
-          window.location.href =
-            oAuthURI + "?callback=http://your-app-callback-url";
-        };
+        window.location.href = oAuthURI;
 
-        console.log("asdfghjkuyfye");
-        console.log(window.location.href);
         //navigate(oAuthURI);
       });
+      //navigate("/dashboard");
     }
   };
 

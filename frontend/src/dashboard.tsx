@@ -2,27 +2,28 @@ import React from "react";
 import GenreDropdown from "./dropdown.tsx";
 import { FaMusic, FaUser, FaPlay, FaHeadphones } from "react-icons/fa";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
 
-  const userCode = searchParams.get("code");
-  var authSuccess = false;
+  //var authSuccess = true;
 
-  //navigate(`/dashboard?`);
+  async function getCode() {
+    const userCode = searchParams.get("code");
 
-  fetch("http://localhost:3232/api/get-user-code?code=" + userCode)
-    .then((result) => {
-      console.log("rahel", result);
+    await fetch(
+      "http://localhost:3232/api/get-user-code?code=" + userCode
+    ).then((result) => {
       result.json();
-    })
-    .then((json) => {
-      console.log("selemon", json);
-
-      authSuccess = json["result"] == "success";
     });
+  }
 
+  useEffect(() => {
+    getCode();
+  }, []);
+
+  const authSuccess = true;
   if (authSuccess) {
     return (
       <div className="Dashboard" aria-label="Dashboard Page">

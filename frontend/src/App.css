@@ -1,0 +1,150 @@
+.mainContainer {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  font-size: 64px;
+  font-weight: bolder;
+  align-items: center;
+  justify-content: center;
+}
+
+.resultContainer,
+.historyItem {
+  flex-direction: row;
+  display: flex;
+  width: 400px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.historyContainer {
+  flex-direction: column;
+  display: flex;
+  height: 200px;
+  align-items: center;
+  flex-grow: 5;
+  justify-content: flex-start;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 260px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.inputContainer > .errorLabel {
+  color: red;
+  font-size: 12px;
+}
+
+.inputBox {
+  height: 48px;
+  width: 400px;
+  font-size: large;
+  border-radius: 8px;
+  border: 1px solid grey;
+  padding-left: 8px;
+}
+body {
+  margin: 0; /* Reset default margin on body */
+}
+
+.Dashboard {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f2f8fd;
+}
+
+.Dashboard-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.Dashboard h1 {
+  color: #005a8d; /* Dark blue text color */
+}
+
+.GenreDropdown {
+  margin-bottom: 20px;
+}
+
+/* Additional styling for content area */
+.Dashboard-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Style for individual content blocks */
+.Content-block {
+  margin-bottom: 30px; /* Increased margin for more spacing */
+  padding: 30px; /* Increased padding for more spacing */
+  border: 1px solid #b5c9d4; /* Lighter border color */
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.Content-block h2 svg {
+  margin-right: 10px;
+  color: #009688;
+}
+.Additional-decorations {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-top: auto;
+}
+.Musical-note {
+  font-size: 36px;
+  margin-right: 10px;
+  color: #1db954; /* Green color inspired by Spotify */
+}
+.Headphones-icon {
+  font-size: 450px;
+  color: #1db954; /* Green color inspired by Spotify */
+  position: absolute;
+  bottom: -130px;
+  transform: translateX(-50%); /* Center the headphones horizontally */
+  left: 45%;
+
+  /* align-items: center; */
+}
+
+@media (min-width: 768px) {
+  .Dashboard {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .Dashboard-content {
+    flex-direction: col;
+  }
+
+  .Content-block {
+    width: 100%;
+  }
+}

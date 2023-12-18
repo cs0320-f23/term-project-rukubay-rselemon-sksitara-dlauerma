@@ -1,9 +1,12 @@
 package server;
 
+import handler.ComputeStatisticsHandler;
 import handler.GetUserCodeHandler;
 import handler.LoginHandler;
 import handler.MakeUserHandler;
 import handler.TopArtistsHandler;
+
+import java.util.HashMap;
 import java.util.Map;
 import spark.Spark;
 
@@ -19,13 +22,12 @@ import static spark.Spark.after;
  * This class makes the server which makes all the handlers related to the project
  */
 public class Server {
-    public Map<String, ourUser> users;
-    private Map<String, ourUser> getUsers() {
+    public static Map<String, ourUser> users = new HashMap<>();
+    public static Map<String, ourUser> getUsers() {
         return users;
     }
-
-    private void setUsers(Map<String, ourUser> users) {
-        this.users = users;
+    public static void addUser(String name, ourUser user) {
+        users.put(name, user);
     }
 
     private static final String clientId = spotifyKeys.CLIENT_ID;
@@ -61,12 +63,14 @@ public class Server {
         LoginHandler loginHandler = new LoginHandler(spotifyApi);
         TopArtistsHandler topArtistsHandler = new TopArtistsHandler(spotifyApi);
         MakeUserHandler makeUserHandler = new MakeUserHandler(spotifyApi);
+        ComputeStatisticsHandler computeStatisticsHandler = new ComputeStatisticsHandler();
 
         Spark.path("/api", () -> {
             Spark.get("/get-user-code", getUserCodeHandler);
             Spark.get("/login", loginHandler);
             Spark.get("/top-artists", topArtistsHandler);
             Spark.get("/make-user", makeUserHandler);
+            Spark.get("/compute-statistics", computeStatisticsHandler);
         });
 
         Spark.init();

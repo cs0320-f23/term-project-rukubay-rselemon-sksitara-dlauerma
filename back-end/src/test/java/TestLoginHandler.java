@@ -84,7 +84,7 @@ public class TestLoginHandler {
    * This method tests to see if the csv loaded can be successful
    */
   @Test
-  public void testSuccessfulLoadCSV() {
+  public void testSuccessfulLogin() {
     boolean exceptionThrown = false;
     try {
       HttpURLConnection clientConnection = tryRequest("api/login");
@@ -97,6 +97,7 @@ public class TestLoginHandler {
       Map<String, Object> response = adapter.fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
       clientConnection.disconnect();
       assertEquals(response.get("result"), "success");
+      assertEquals(response.get("uri").toString().substring(0, 53 + spotifyApi.getClientId().length()), "https://accounts.spotify.com:443/authorize?client_id=" + spotifyKeys.CLIENT_ID);
     }
     catch (IOException e) {
       exceptionThrown = Boolean.TRUE;

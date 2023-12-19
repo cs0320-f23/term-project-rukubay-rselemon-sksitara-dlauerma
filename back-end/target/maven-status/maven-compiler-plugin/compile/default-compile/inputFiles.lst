@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /Users/siddarthsitaraman/Documents/CSCI0320/term-project-rukubay-rselemon-sksitara-dlauerma/back-end/src/main/java/handler/SearchHandler.java
 /Users/siddarthsitaraman/Documents/CSCI0320/term-project-rukubay-rselemon-sksitara-dlauerma/back-end/src/main/java/server/Server.java
 /Users/siddarthsitaraman/Documents/CSCI0320/term-project-rukubay-rselemon-sksitara-dlauerma/back-end/src/main/java/exception/DatasourceException.java
@@ -20,3 +21,13 @@
 /Users/siddarthsitaraman/Documents/CSCI0320/term-project-rukubay-rselemon-sksitara-dlauerma/back-end/src/main/java/datasource/MockCensusDatasource.java
 /Users/siddarthsitaraman/Documents/CSCI0320/term-project-rukubay-rselemon-sksitara-dlauerma/back-end/src/main/java/handler/ViewHandler.java
 /Users/siddarthsitaraman/Documents/CSCI0320/term-project-rukubay-rselemon-sksitara-dlauerma/back-end/src/main/java/Main.java
+=======
+C:\Users\davel\cs320\term-project-rukubay-rselemon-sksitara-dlauerma\back-end\src\main\java\handler\LoginHandler.java
+C:\Users\davel\cs320\term-project-rukubay-rselemon-sksitara-dlauerma\back-end\src\main\java\statistics\Statistics.java
+C:\Users\davel\cs320\term-project-rukubay-rselemon-sksitara-dlauerma\back-end\src\main\java\server\Server.java
+C:\Users\davel\cs320\term-project-rukubay-rselemon-sksitara-dlauerma\back-end\src\main\java\exception\DatasourceException.java
+C:\Users\davel\cs320\term-project-rukubay-rselemon-sksitara-dlauerma\back-end\src\main\java\exception\SearchException.java
+C:\Users\davel\cs320\term-project-rukubay-rselemon-sksitara-dlauerma\back-end\src\main\java\exception\ParserException.java
+C:\Users\davel\cs320\term-project-rukubay-rselemon-sksitara-dlauerma\back-end\src\main\java\Main.java
+C:\Users\davel\cs320\term-project-rukubay-rselemon-sksitara-dlauerma\back-end\src\main\java\handler\GetUserCodeHandler.java
+>>>>>>> spotify-api

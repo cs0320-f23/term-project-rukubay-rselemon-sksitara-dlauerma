@@ -6,6 +6,8 @@ import handler.LoginHandler;
 import handler.MakeUserHandler;
 import handler.TopArtistsHandler;
 
+import handler.TopGenreHandler;
+import handler.TopSongsHandler;
 import java.util.HashMap;
 import java.util.Map;
 import spark.Spark;
@@ -62,6 +64,8 @@ public class Server {
         GetUserCodeHandler getUserCodeHandler = new GetUserCodeHandler(spotifyApi, code);
         LoginHandler loginHandler = new LoginHandler(spotifyApi);
         TopArtistsHandler topArtistsHandler = new TopArtistsHandler(spotifyApi);
+        TopSongsHandler topSongsHandler = new TopSongsHandler(spotifyApi);
+        TopGenreHandler topGenresHandler = new TopGenreHandler(spotifyApi);
         MakeUserHandler makeUserHandler = new MakeUserHandler(spotifyApi);
         ComputeStatisticsHandler computeStatisticsHandler = new ComputeStatisticsHandler();
 
@@ -69,6 +73,8 @@ public class Server {
             Spark.get("/get-user-code", getUserCodeHandler);
             Spark.get("/login", loginHandler);
             Spark.get("/top-artists", topArtistsHandler);
+            Spark.get("/top-songs", topSongsHandler);
+            Spark.get("/top-genres", topGenresHandler);
             Spark.get("/make-user", makeUserHandler);
             Spark.get("/compute-statistics", computeStatisticsHandler);
         });

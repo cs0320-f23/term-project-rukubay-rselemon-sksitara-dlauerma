@@ -1,5 +1,7 @@
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import statistics.Statistics;
@@ -43,5 +45,20 @@ public class TestStatistics{
     String[] b = {"Rap", "Jazz", "Soul", "Soul", "Classical", "Rap", "Jazz"};
     List<String> user2 = Arrays.asList(b);
     assertEquals(2.f / 3.f, stats.computeOverlap(user1, user2));
+  }
+
+  @Test
+  public void testSorting(){
+    Statistics stats = new Statistics<>();
+    Map<String, Float> overlaps = new HashMap<>();
+    overlaps.put("Rahel", 0.5f);
+    overlaps.put("Ruth", 0.9f);
+    overlaps.put("David", 0.8f);
+    overlaps.put("Tim", 0.4f);
+    List<Map.Entry<String, Float>> sortedOverlaps = stats.rankedList(overlaps);
+    assertEquals("Ruth", sortedOverlaps.get(0).getKey());
+    assertEquals("David", sortedOverlaps.get(1).getKey());
+    assertEquals("Rahel", sortedOverlaps.get(2).getKey());
+    assertEquals("Tim", sortedOverlaps.get(3).getKey());
   }
 }

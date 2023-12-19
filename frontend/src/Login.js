@@ -52,6 +52,7 @@ const Login = (props) => {
         window.location.href = oAuthURI;
 
         //navigate(oAuthURI);
+        navigate("/dashboard", { state: { email } });
       });
       //navigate("/dashboard");
     }

@@ -28,9 +28,9 @@ public class TopArtistsHandler implements Route{
         Map<String, Object> responseMap = new HashMap<>();
 
         GetUsersTopArtistsRequest getUsersTopArtistsRequest = this.spotifyApi.getUsersTopArtists()
-                .time_range("medium_term")
-                .limit(10)
-                .build();
+            .time_range("medium_term")
+            .limit(10)
+            .build();
         try {
             Paging<Artist> artists = getUsersTopArtistsRequest.execute();
             responseMap.put("artists", artists.getItems());
@@ -43,3 +43,4 @@ public class TopArtistsHandler implements Route{
         return adapter.toJson(responseMap);
     }
 }
+

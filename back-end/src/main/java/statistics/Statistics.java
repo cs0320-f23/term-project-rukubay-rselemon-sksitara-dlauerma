@@ -1,5 +1,6 @@
 package statistics;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -15,5 +16,10 @@ public class Statistics<T> {
     }
     // Jaccard similarity, A int B / A U B
     return (!user1.isEmpty() && !user2.isEmpty()) ? sum / (user1.size() + user2.size()) : 0;
+  }
+  public List<Map.Entry<String,Float>> rankedList(Map<String, Float> overlaps){
+    List<Map.Entry<String, Float>> entryList = new ArrayList<>(overlaps.entrySet());
+    entryList.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+    return entryList;
   }
 }

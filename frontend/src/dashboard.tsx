@@ -46,11 +46,11 @@ function Dashboard(props) {
       .then((r2) => {
         setTopSong(r2["songs"][0].name);
       });
-    // await fetch("http://localhost:3232/api/top-genres")
-    //   .then((r1) => r1.json())
-    //   .then((r2) => {
-    //     setTopGenre(r2["genres"][0]);
-    //   });
+    await fetch("http://localhost:3232/api/top-genres?username=" + username)
+      .then((r1) => r1.json())
+      .then((r2) => {
+        setTopGenre(r2["genres"][0]);
+      });
     await fetch(
       "http://localhost:3232/api/compute-statistics?username=" +
         username +
@@ -58,7 +58,7 @@ function Dashboard(props) {
         "&time-range=medium"
     )
       .then((result) => result.json())
-      .then((r) => console.log(r));
+      .then((r) => console.log(r["overlaps"]));
   }
 
   useEffect(() => {

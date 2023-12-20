@@ -122,7 +122,7 @@ public class MakeUserHandler implements Route {
 
         // creating lists of top genres for short, medium, and long terms
         try {
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i <= 2; i++) {
                 List<String> a = new ArrayList<>();
                 for (Artist artist : newUser.getTopArtists(i)) {
                     a.addAll(Arrays.asList(artist.getGenres()));

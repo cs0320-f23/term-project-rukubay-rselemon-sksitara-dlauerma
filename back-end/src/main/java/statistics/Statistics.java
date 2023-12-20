@@ -15,7 +15,7 @@ public class Statistics<T> {
       }
     }
     // Jaccard similarity, A int B / A U B
-    return (!user1.isEmpty() && !user2.isEmpty()) ? sum / (user1.size() + user2.size()) : 0;
+    return (!user1.isEmpty() || !user2.isEmpty()) ? sum / (user1.size() + user2.size()) : 0;
   }
   public List<Map.Entry<String,Float>> rankedList(Map<String, Float> overlaps){
     List<Map.Entry<String, Float>> entryList = new ArrayList<>(overlaps.entrySet());

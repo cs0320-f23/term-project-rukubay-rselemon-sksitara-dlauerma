@@ -19,7 +19,6 @@ function Dashboard(props) {
   const password = state !== null ? decodeURI(state).split("|")[1] : "";
 
   async function getCode() {
-    console.log(username);
     //authenticating
     await fetch(
       "http://localhost:3232/api/get-user-code?code=" + userCode
@@ -32,9 +31,7 @@ function Dashboard(props) {
         username +
         "&password=" +
         password
-    )
-      .then((result) => result.json())
-      .then((r) => console.log(r["result"]));
+    ).then((result) => result.json());
     //getting and computing statistics
     await fetch("http://localhost:3232/api/top-artists?username=" + username)
       .then((r1) => r1.json())
@@ -54,11 +51,14 @@ function Dashboard(props) {
     await fetch(
       "http://localhost:3232/api/compute-statistics?username=" +
         username +
-        "&compare-by=artist" +
-        "&time-range=medium"
+        "&compare-by=artists" +
+        "&time-range=short"
     )
       .then((result) => result.json())
-      .then((r) => console.log(r["overlaps"]));
+      .then((r) => {
+        setTopMatches(r["overlaps"]);
+        console.log(topMatches);
+      });
   }
 
   useEffect(() => {

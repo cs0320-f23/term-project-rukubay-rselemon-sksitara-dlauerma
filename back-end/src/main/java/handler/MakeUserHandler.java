@@ -4,8 +4,10 @@ import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
 
+import datatypes.ourUser;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.hc.core5.http.ParseException;
@@ -14,10 +16,11 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.model_objects.specification.Track;
-import se.michaelthelin.spotify.model_objects.specification.User;
+//import se.michaelthelin.spotify.model_objects.specification.User;
 import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopArtistsRequest;
 import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopTracksRequest;
 import se.michaelthelin.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
+//import server.Server;
 import server.Server;
 import spark.Request;
 import spark.Response;
@@ -27,7 +30,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import datatypes.ourUser;
+//import datatypes.ourUser;
 
 /**
  * Endpoint which creates and populates a user profile, expects a username and password
@@ -46,18 +49,18 @@ public class MakeUserHandler implements Route {
         // user info
         String username = request.queryParams("username");
         String password = request.queryParams("password");
-        ourUser newUser = new ourUser(username, password);
+        ourUser newUser = new ourUser(username, password);//new ourUser(username, password);
 
-        GetCurrentUsersProfileRequest getCurrentUsersProfileRequest = spotifyApi.getCurrentUsersProfile()
-                .build();
-        String spotifyUsername = "";
-        try {
-            User user = getCurrentUsersProfileRequest.execute();
-            spotifyUsername = user.getDisplayName();
-
-        } catch (IOException | SpotifyWebApiException | ParseException e) {
-            e.printStackTrace();
-        }
+        //GetCurrentUsersProfileRequest getCurrentUsersProfileRequest = spotifyApi.getCurrentUsersProfile()
+                //.build();
+//        String spotifyUsername = "";
+//        try {
+//            User user = getCurrentUsersProfileRequest.execute();
+//            spotifyUsername = user.getDisplayName();
+//
+//        } catch (IOException | SpotifyWebApiException | ParseException e) {
+//            e.printStackTrace();
+//        }
 
         // create the requests for short, medium, and long term
         GetUsersTopArtistsRequest getUsersTopArtistsRequestShort = this.spotifyApi.getUsersTopArtists()
@@ -118,15 +121,21 @@ public class MakeUserHandler implements Route {
         }
 
         // creating lists of top genres for short, medium, and long terms
-        for (int i = 0; i < 2; i++){
-            newUser.setTopGenre(new ArrayList<>(), i);
-            for (Artist artist : newUser.getTopArtists(i)) {
-                newUser.getTopGenre(i).addAll(List.of(artist.getGenres()));
+        try {
+            for (int i = 0; i < 2; i++) {
+                List<String> a = new ArrayList<>();
+                for (Artist artist : newUser.getTopArtists(i)) {
+                    a.addAll(Arrays.asList(artist.getGenres()));
+                }
+                newUser.setTopGenre(a, i);
             }
+        }
+        catch( Exception e){
+            responseMap.put("result", "failure");
+            e.printStackTrace();
         }
 
         Server.addUser(username, newUser);
-
         return adapter.toJson(responseMap);
     }
 }

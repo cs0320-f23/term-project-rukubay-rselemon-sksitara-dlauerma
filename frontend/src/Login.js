@@ -3,23 +3,26 @@ import { useNavigate } from "react-router-dom";
 
 //const oAuthURI = "";
 
-async function getURI() {
-  return await fetch("http://localhost:3232/api/login")
-    .then((response) => response.json())
-    .then((json) => {
-      if (json["result"] == "success") {
-        return json["uri"];
-      } else {
-        return "";
-      }
-    });
-}
-
 const Login = (props) => {
-  const [email, setEmail] = useState("");
+  //const [email, setEmail] = useState("");
+  const { email, setEmail } = props;
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  async function getURI() {
+    return await fetch(
+      "http://localhost:3232/api/login?state=" + email + "|" + password
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        if (json["result"] == "success") {
+          return json["uri"];
+        } else {
+          return "";
+        }
+      });
+  }
 
   const navigate = useNavigate();
 
@@ -48,11 +51,12 @@ const Login = (props) => {
       setPasswordError("The password must be 8 characters or longer");
       return;
     } else {
+      console.log(email);
+      //navigate("/dashboard", { state: { email } });
       getURI().then((oAuthURI) => {
         window.location.href = oAuthURI;
-
         //navigate(oAuthURI);
-        navigate("/dashboard", { state: { email } });
+        //console.log(oAuthURI);
       });
       //navigate("/dashboard");
     }
@@ -68,7 +72,9 @@ const Login = (props) => {
         <input
           value={email}
           placeholder="Enter your email here"
-          onChange={(ev) => setEmail(ev.target.value)}
+          onChange={(ev) => {
+            setEmail(ev.target.value);
+          }}
           className={"inputBox"}
         />
         <label className="errorLabel">{emailError}</label>

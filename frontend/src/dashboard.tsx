@@ -1,68 +1,68 @@
 import React from "react";
 import GenreDropdown from "./dropdown.tsx";
-import { FaMusic, FaUser, FaPlay, FaHeadphones } from "react-icons/fa";
+import { FaMusic, FaUser, FaPlay, FaHeadphones, FaPlug } from "react-icons/fa";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { Dispatch, ReactElement, SetStateAction, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useState } from "react";
 
-function Dashboard() {
+function Dashboard(props) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   //var authSuccess = true;
-  const location = useLocation();
-  const { email } = location.state || {};
   const [topArtist, setTopArtist] = useState<string>("");
   const [topSong, setTopSong] = useState<string>("");
   const [topGenre, setTopGenre] = useState<string>("");
+  const [topMatches, setTopMatches] = useState<string>("");
+  const userCode = searchParams.get("code");
+  const state = searchParams.get("state");
+  const username = state !== null ? decodeURI(state).split("|")[0] : "";
+  const password = state !== null ? decodeURI(state).split("|")[1] : "";
 
   async function getCode() {
-    const userCode = searchParams.get("code");
+    console.log(username);
+    //authenticating
     await fetch(
       "http://localhost:3232/api/get-user-code?code=" + userCode
     ).then((result) => {
       result.json();
     });
-    // await fetch("http://localhost:3232/api/make-user?username=siddu&password=1")
-    //   .then((result) => {
-    //     result.json();
-    //   })
-    //   .then((r1) => console.log(r1));
-    await fetch("http://localhost:3232/api/top-artists")
+    //adding user to database
+    await fetch(
+      "http://localhost:3232/api/make-user?username=" +
+        username +
+        "&password=" +
+        password
+    )
+      .then((result) => result.json())
+      .then((r) => console.log(r["result"]));
+    //getting and computing statistics
+    await fetch("http://localhost:3232/api/top-artists?username=" + username)
       .then((r1) => r1.json())
       .then((r2) => {
-        console.log(r2);
         setTopArtist(r2["artists"][0].name);
       });
-    await fetch("http://localhost:3232/api/top-songs")
+    await fetch("http://localhost:3232/api/top-songs?username=" + username)
       .then((r1) => r1.json())
       .then((r2) => {
-        console.log(r2);
         setTopSong(r2["songs"][0].name);
       });
-    await fetch("http://localhost:3232/api/top-genres")
-      .then((r1) => r1.json())
-      .then((r2) => {
-        console.log(r2);
-        setTopGenre(r2["genres"][0]);
-      });
+    // await fetch("http://localhost:3232/api/top-genres")
+    //   .then((r1) => r1.json())
+    //   .then((r2) => {
+    //     setTopGenre(r2["genres"][0]);
+    //   });
+    await fetch(
+      "http://localhost:3232/api/compute-statistics?username=" +
+        username +
+        "&compare-by=artist" +
+        "&time-range=medium"
+    )
+      .then((result) => result.json())
+      .then((r) => console.log(r));
   }
-  // async function makeUser() {
-  //   await fetch(
-  //     //"http://localhost:3232/api/make-user?username=" + email + "&password=1"
-  //     "http://localhost:3232/api/make-user?username=sid@gmail.com&password=1"
-  //   ).then((result) => result.json());
-  //   await fetch("http://localhost:3232/api/top-artists")
-  //     .then((r1) => r1.json())
-  //     .then((r2) => {
-  //       console.log(r2);
-  //       setTopArtist(r2["artists"][0]);
-  //     });
-  // }
 
   useEffect(() => {
     getCode();
-    //makeUser();
   }, []);
 
   const authSuccess = true;
@@ -99,6 +99,10 @@ function Dashboard() {
           </div>
 
           <div className="Content-block">
+            <h2>
+              <FaPlug />
+              Top Matches: {topMatches}
+            </h2>
             {/* Additional content blocks as needed */}
           </div>
         </div>

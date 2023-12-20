@@ -29,10 +29,12 @@ public class LoginHandler implements Route {
         JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("result", "success");
+        String email = request.queryParams("state");
 
         //fetch the uri which redirects the user to login page
         AuthorizationCodeUriRequest authorizationCodeUriRequest = this.spotifyApi.authorizationCodeUri()
                 .scope("user-top-read, user-read-email, user-read-private")
+                .state(email)
                 .build();
         URI uri = authorizationCodeUriRequest.execute();
         responseMap.put("uri", uri.toString());

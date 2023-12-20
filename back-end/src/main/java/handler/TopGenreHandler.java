@@ -9,6 +9,7 @@ import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopArtistsRequest;
+import server.Server;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -29,19 +30,21 @@ public class TopGenreHandler implements Route{
     Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
     JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
     Map<String, Object> responseMap = new HashMap<>();
+    String username = request.queryParams("username");
 
-    GetUsersTopArtistsRequest getUsersTopArtistsRequest = this.spotifyApi.getUsersTopArtists()
-        .time_range("medium_term")
-        .limit(10)
-        .build();
+//    GetUsersTopArtistsRequest getUsersTopArtistsRequest = this.spotifyApi.getUsersTopArtists()
+//        .time_range("medium_term")
+//        .limit(10)
+//        .build();
     try {
-      Paging<Artist> artists = getUsersTopArtistsRequest.execute();
-      List<Artist> artistList = List.of(artists.getItems());
-      List<String> genreList = new ArrayList<>();
-      for (Artist artist : artistList) {
-        genreList.addAll(List.of(artist.getGenres()));
-      }
-
+//      Paging<Artist> artists = getUsersTopArtistsRequest.execute();
+//      List<Artist> artistList = List.of(artists.getItems());
+//      List<String> genreList = new ArrayList<>();
+//      for (Artist artist : artistList) {
+//        genreList.addAll(List.of(artist.getGenres()));
+//      }
+      List<String> genreList = Server.getUsers().get(username).getTopGenre(2);
+      System.out.println(genreList);
       Map<String, Float> frequencyMap = new HashMap<>();
       // Count the frequencies
       for (String str : genreList) {

@@ -33,6 +33,7 @@ public class ComputeStatisticsHandler implements Route {
       Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
       JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
       Map<String, Object> responseMap = new HashMap<>();
+      System.out.println(Server.getUsers().keySet());
     try {
 
       String feature = request.queryParams("compare-by");
@@ -45,6 +46,7 @@ public class ComputeStatisticsHandler implements Route {
       };
 
       ourUser user = Server.getUsers().get(username);
+      List<Map.Entry<String, Float>> rankedOverlaps = new ArrayList<>();
 
       switch (feature) {
         case "artists" -> {
@@ -56,6 +58,7 @@ public class ComputeStatisticsHandler implements Route {
               overlaps.put(otherUser.getKey(), overlap);
             }
           }
+          rankedOverlaps = stats.rankedList(overlaps);
         }
         case "songs" -> {
           Statistics<Track> stats = new Statistics<>();
@@ -66,6 +69,7 @@ public class ComputeStatisticsHandler implements Route {
               overlaps.put(otherUser.getKey(), overlap);
             }
           }
+          rankedOverlaps = stats.rankedList(overlaps);
         }
         case "genres" -> {
           Statistics<String> stats = new Statistics<>();
@@ -76,12 +80,14 @@ public class ComputeStatisticsHandler implements Route {
               overlaps.put(otherUser.getKey(), overlap);
             }
           }
+          rankedOverlaps = stats.rankedList(overlaps);
         }
       }
       responseMap.put("overlaps", overlaps);
       responseMap.put("result", "success");
     } catch (Exception e) {
       e.printStackTrace();
+      responseMap.put("result", "failure");
     }
     return adapter.toJson(responseMap);
   }

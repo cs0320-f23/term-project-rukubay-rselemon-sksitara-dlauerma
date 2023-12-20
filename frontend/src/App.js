@@ -25,9 +25,15 @@ function App() {
           />
           <Route
             path="/login"
-            element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} />}
+            element={
+              <Login
+                setLoggedIn={setLoggedIn}
+                email={email}
+                setEmail={setEmail}
+              />
+            }
           />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard email={email} />} />
         </Routes>
       </BrowserRouter>
     </div>

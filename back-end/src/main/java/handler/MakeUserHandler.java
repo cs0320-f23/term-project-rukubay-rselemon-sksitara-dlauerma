@@ -34,6 +34,7 @@ import java.util.Map;
 
 /**
  * Endpoint which creates and populates a user profile, expects a username and password
+ * If user is already created, logs back in.
  */
 public class MakeUserHandler implements Route {
     private final SpotifyApi spotifyApi;
@@ -49,6 +50,18 @@ public class MakeUserHandler implements Route {
         // user info
         String username = request.queryParams("username");
         String password = request.queryParams("password");
+        if (false) {//!Server.getUsers().isEmpty() && Server.getUsers().containsKey(username)){
+            System.out.print("log back in " + username);
+            if (Server.getUsers().get(username).checkPassword(password)){
+                responseMap.put("result", "successfully logged back in");
+            }
+            else{
+                responseMap.put("result", "wrong password!");
+            }
+          return adapter.toJson(responseMap);
+        }
+        System.out.print("initialize " + username);
+
         ourUser newUser = new ourUser(username, password);//new ourUser(username, password);
 
         //GetCurrentUsersProfileRequest getCurrentUsersProfileRequest = spotifyApi.getCurrentUsersProfile()
@@ -61,7 +74,6 @@ public class MakeUserHandler implements Route {
 //        } catch (IOException | SpotifyWebApiException | ParseException e) {
 //            e.printStackTrace();
 //        }
-
         // create the requests for short, medium, and long term
         GetUsersTopArtistsRequest getUsersTopArtistsRequestShort = this.spotifyApi.getUsersTopArtists()
                 .time_range("short_term")
@@ -115,13 +127,8 @@ public class MakeUserHandler implements Route {
             newUser.setTopTracks(List.of(tracksMed.getItems()), 1);
             Paging<Track> tracksLong = getUsersTopTracksRequestLong.execute();
             newUser.setTopTracks(List.of(tracksLong.getItems()), 2);
-        } catch (Exception e) {
-            responseMap.put("result", "failure");
-            e.printStackTrace();
-        }
 
         // creating lists of top genres for short, medium, and long terms
-        try {
             for (int i = 0; i <= 2; i++) {
                 List<String> a = new ArrayList<>();
                 for (Artist artist : newUser.getTopArtists(i)) {
@@ -129,13 +136,12 @@ public class MakeUserHandler implements Route {
                 }
                 newUser.setTopGenre(a, i);
             }
+            Server.addUser(username, newUser);
         }
         catch( Exception e){
             responseMap.put("result", "failure");
             e.printStackTrace();
         }
-
-        Server.addUser(username, newUser);
         return adapter.toJson(responseMap);
     }
 }

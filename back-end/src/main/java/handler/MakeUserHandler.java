@@ -5,22 +5,17 @@ import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
 
 import datatypes.ourUser;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.hc.core5.http.ParseException;
 import se.michaelthelin.spotify.SpotifyApi;
-import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.model_objects.specification.Track;
-//import se.michaelthelin.spotify.model_objects.specification.User;
 import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopArtistsRequest;
 import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopTracksRequest;
-import se.michaelthelin.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
-//import server.Server;
+
 import server.Server;
 import spark.Request;
 import spark.Response;
@@ -29,8 +24,6 @@ import spark.Route;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-
-//import datatypes.ourUser;
 
 /**
  * Endpoint which creates and populates a user profile, expects a username and password
@@ -50,17 +43,14 @@ public class MakeUserHandler implements Route {
         // user info
         String username = request.queryParams("username");
         String password = request.queryParams("password");
-        if (false) {//!Server.getUsers().isEmpty() && Server.getUsers().containsKey(username)){
-            System.out.print("log back in " + username);
+        if (Server.getUsers().containsKey(username)) {
             if (Server.getUsers().get(username).checkPassword(password)){
                 responseMap.put("result", "successfully logged back in");
-            }
-            else{
+            } else {
                 responseMap.put("result", "wrong password!");
             }
           return adapter.toJson(responseMap);
         }
-        System.out.print("initialize " + username);
 
         ourUser newUser = new ourUser(username, password);//new ourUser(username, password);
 

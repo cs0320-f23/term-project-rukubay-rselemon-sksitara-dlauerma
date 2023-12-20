@@ -4,9 +4,6 @@ import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
 import se.michaelthelin.spotify.SpotifyApi;
-import se.michaelthelin.spotify.model_objects.specification.Artist;
-import se.michaelthelin.spotify.model_objects.specification.Paging;
-import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopArtistsRequest;
 import server.Server;
 import spark.Request;
 import spark.Response;
@@ -28,10 +25,6 @@ public class TopArtistsHandler implements Route{
         JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
         Map<String, Object> responseMap = new HashMap<>();
         String username = request.queryParams("username");
-//        GetUsersTopArtistsRequest getUsersTopArtistsRequest = this.spotifyApi.getUsersTopArtists()
-//            .time_range("medium_term")
-//            .limit(10)
-//            .build();
         try {
             responseMap.put("artists", Server.getUsers().get(username).getTopArtists(2));
             responseMap.put("result", "success");

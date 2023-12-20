@@ -32,17 +32,7 @@ public class TopGenreHandler implements Route{
     Map<String, Object> responseMap = new HashMap<>();
     String username = request.queryParams("username");
 
-//    GetUsersTopArtistsRequest getUsersTopArtistsRequest = this.spotifyApi.getUsersTopArtists()
-//        .time_range("medium_term")
-//        .limit(10)
-//        .build();
     try {
-//      Paging<Artist> artists = getUsersTopArtistsRequest.execute();
-//      List<Artist> artistList = List.of(artists.getItems());
-//      List<String> genreList = new ArrayList<>();
-//      for (Artist artist : artistList) {
-//        genreList.addAll(List.of(artist.getGenres()));
-//      }
       List<String> genreList = Server.getUsers().get(username).getTopGenre(2);
       System.out.println(genreList);
       Map<String, Float> frequencyMap = new HashMap<>();

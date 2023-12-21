@@ -8,7 +8,6 @@ import { useState } from "react";
 function Dashboard(props) {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  //var authSuccess = true;
   const [topArtist, setTopArtist] = useState<string>("");
   const [topArtistGenre, setTopArtistGenre] = useState<string>("");
   const [topSong, setTopSong] = useState<string>("");
@@ -25,15 +24,12 @@ function Dashboard(props) {
 
   function sortArtist(artists) {
     var genreToArtist = new Map();
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < artists.length; i++) {
       var relevantGenres = artists[i].genres;
       for (let j = 0; j < relevantGenres.length; j++) {
         var genre = relevantGenres[j];
         if (!genreToArtist.has(genre) && topTen.includes(genre)) {
-          genreToArtist.set(genre, [
-            artists[i].name,
-            artists[i]["images"]["url"],
-          ]);
+          genreToArtist.set(genre, [artists[i].name]);
           break;
         }
       }
@@ -71,6 +67,9 @@ function Dashboard(props) {
       .then((r2) => {
         if (r2["result"] == "success") {
           setTopGenre(r2["genres"][0]);
+          if (r2["genres"].length < 10) {
+            setTopTen(r2["genres"].slice(0, r2["genre"].length));
+          }
           setTopTen(r2["genres"].slice(0, 10));
         }
       });
@@ -80,7 +79,6 @@ function Dashboard(props) {
         if (r2["result"] == "success") {
           setTopArtist(r2["artists"][0].name);
           setArtistsData(r2["artists"]);
-          //sortArtist(r2["artists"]);
         }
       });
     await fetch("http://localhost:3232/api/top-songs?username=" + username)
@@ -93,7 +91,7 @@ function Dashboard(props) {
     await fetch(
       "http://localhost:3232/api/compute-statistics?username=" +
         username +
-        "&compare-by=artists" +
+        "&compare-by=genre" +
         "&time-range=short"
     )
       .then((result) => result.json())
@@ -107,10 +105,6 @@ function Dashboard(props) {
   useEffect(() => {
     getCode();
   }, []);
-
-  //function genreSelectUpdate(selection: string) {
-
-  //}
 
   const authSuccess = true;
   if (authSuccess) {
@@ -151,7 +145,7 @@ function Dashboard(props) {
           <GenreDropdown
             topTen={topTen}
             onGenreSelect={setTopArtistGenre}
-            artist={genreToArtistMap.get(topArtistGenre)[0]}
+            artist={genreToArtistMap.get(topArtistGenre)}
           />
         </div>
         <div className="Additional-decorations">

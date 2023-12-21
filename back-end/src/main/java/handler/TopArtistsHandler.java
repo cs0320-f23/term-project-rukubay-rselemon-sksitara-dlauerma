@@ -25,8 +25,18 @@ public class TopArtistsHandler implements Route{
         JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
         Map<String, Object> responseMap = new HashMap<>();
         String username = request.queryParams("username");
+        String timeRange = request.queryParams("time-range");
+        int timeInt;
+        if (timeRange == "short") {
+            timeInt = 0;
+        } else if (timeRange == "medium") {
+            timeInt = 1;
+        } else {
+            timeInt = 2;
+        }
+
         try {
-            responseMap.put("artists", Server.getUsers().get(username).getTopArtists(2));
+            responseMap.put("artists", Server.getUsers().get(username).getTopArtists(timeInt));
             responseMap.put("result", "success");
         } catch (Exception e) {
             responseMap.put("result", "failure");

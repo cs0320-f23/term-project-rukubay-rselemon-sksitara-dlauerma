@@ -116,7 +116,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  margin-top: auto;
+  margin-top: 400px;
+  margin-right: 100px;
 }
 .Musical-note {
   font-size: 36px;
@@ -124,12 +125,12 @@ body {
   color: #1db954; /* Green color inspired by Spotify */
 }
 .Headphones-icon {
-  font-size: 450px;
+  font-size: 300px;
   color: #1db954; /* Green color inspired by Spotify */
   position: absolute;
-  bottom: -130px;
-  transform: translateX(-50%); /* Center the headphones horizontally */
-  left: 45%;
+  bottom: -200px;
+  transform: translateX(-70%); /* Center the headphones horizontally */
+  left: 70%;
 
   /* align-items: center; */
 }

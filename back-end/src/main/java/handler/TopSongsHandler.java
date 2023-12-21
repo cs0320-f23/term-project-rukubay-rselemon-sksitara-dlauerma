@@ -30,13 +30,18 @@ public class TopSongsHandler implements Route{
     JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
     Map<String, Object> responseMap = new HashMap<>();
     String username = request.queryParams("username");
+    String timeRange = request.queryParams("time-range");
+    int timeInt;
+    if (timeRange == "short") {
+      timeInt = 0;
+    } else if (timeRange == "medium") {
+      timeInt = 1;
+    } else {
+      timeInt = 2;
+    }
 
-//    GetUsersTopTracksRequest getUsersTopSongsRequest = this.spotifyApi.getUsersTopTracks()
-//        .time_range("medium_term")
-//        .limit(10)
-//        .build();
     try {
-      responseMap.put("songs", Server.getUsers().get(username).getTopTracks(2));
+      responseMap.put("songs", Server.getUsers().get(username).getTopTracks(timeInt));
       responseMap.put("result", "success");
     } catch (Exception e) {
       responseMap.put("result", "failure");

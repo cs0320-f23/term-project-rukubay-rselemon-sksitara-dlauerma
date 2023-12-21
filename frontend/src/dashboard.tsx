@@ -4,6 +4,8 @@ import { FaMusic, FaUser, FaPlay, FaHeadphones, FaPlug } from "react-icons/fa";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
+import AlgoDropdown from "./algoSelection.tsx";
+import TimeDropdown from "./timeSelection.tsx";
 
 function Dashboard(props) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,6 +18,8 @@ function Dashboard(props) {
   const [topMatches, setTopMatches] = useState<string>("");
   const [artistsData, setArtistsData] = useState([]);
   const [genreToArtistMap, setGenreToArtistMap] = useState(new Map());
+  const [compareAlgo, setCompareAlgo] = useState<string>("genres");
+  const [compareTime, setCompareTime] = useState<string>("short");
 
   const userCode = searchParams.get("code");
   const state = searchParams.get("state");
@@ -38,10 +42,6 @@ function Dashboard(props) {
   }
 
   useEffect(() => {
-    console.log("faba", genreToArtistMap);
-  }, [genreToArtistMap]);
-
-  useEffect(() => {
     if (artistsData.length > 0 && topTen.length > 0) {
       sortArtist(artistsData);
     }
@@ -62,18 +62,28 @@ function Dashboard(props) {
         password
     ).then((result) => result.json());
     //getting and computing statistics
-    await fetch("http://localhost:3232/api/top-genres?username=" + username)
+    await fetch(
+      "http://localhost:3232/api/top-genres?username=" +
+        username +
+        "&time-range=" +
+        compareTime
+    )
       .then((r1) => r1.json())
       .then((r2) => {
         if (r2["result"] == "success") {
           setTopGenre(r2["genres"][0]);
           if (r2["genres"].length < 10) {
-            setTopTen(r2["genres"].slice(0, r2["genre"].length));
+            setTopTen(r2["genres"].slice(0, r2["genres"].length));
           }
           setTopTen(r2["genres"].slice(0, 10));
         }
       });
-    await fetch("http://localhost:3232/api/top-artists?username=" + username)
+    await fetch(
+      "http://localhost:3232/api/top-artists?username=" +
+        username +
+        "&time-range=" +
+        compareTime
+    )
       .then((r1) => r1.json())
       .then((r2) => {
         if (r2["result"] == "success") {
@@ -81,7 +91,12 @@ function Dashboard(props) {
           setArtistsData(r2["artists"]);
         }
       });
-    await fetch("http://localhost:3232/api/top-songs?username=" + username)
+    await fetch(
+      "http://localhost:3232/api/top-songs?username=" +
+        username +
+        "&time-range=" +
+        compareTime
+    )
       .then((r1) => r1.json())
       .then((r2) => {
         if (r2["result"] == "success") {
@@ -91,8 +106,10 @@ function Dashboard(props) {
     await fetch(
       "http://localhost:3232/api/compute-statistics?username=" +
         username +
-        "&compare-by=genre" +
-        "&time-range=short"
+        "&compare-by=" +
+        compareAlgo +
+        "&time-range=" +
+        compareTime
     )
       .then((result) => result.json())
       .then((r) => {
@@ -104,13 +121,15 @@ function Dashboard(props) {
 
   useEffect(() => {
     getCode();
-  }, []);
+  }, [compareAlgo, compareTime]);
 
   const authSuccess = true;
   if (authSuccess) {
     return (
       <div className="Dashboard" aria-label="Dashboard Page">
         <div className="Dashboard-header" aria-label="Application Header"></div>
+        <AlgoDropdown onAlgoSelect={setCompareAlgo} />
+        <TimeDropdown onTimeSelect={setCompareTime} />
         <div className="Dashboard-content">
           <div className="Content-block">
             <h2>
@@ -149,10 +168,6 @@ function Dashboard(props) {
           />
         </div>
         <div className="Additional-decorations">
-          <div className="Musical-note">🎵</div>
-          <div className="Musical-note">🎵</div>
-          <div className="Musical-note">🎵</div>
-
           <div className="Headphones-icon">
             <FaHeadphones />
           </div>

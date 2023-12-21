@@ -23,7 +23,7 @@ const GenreDropdown = (props) => {
 
   return (
     <div>
-      <h2>Your Top genres</h2>
+      <h2>Your Top Genres</h2>
       <select value={selectedOption} onChange={handleSelectChange}>
         {options}
       </select>

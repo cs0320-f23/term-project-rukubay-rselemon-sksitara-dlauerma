@@ -25,22 +25,19 @@ function Dashboard(props) {
 
   function sortArtist(artists) {
     var genreToArtist = new Map();
-    console.log("artists", artists);
-    console.log("topten", topTen);
-    //genreToArtist.set("", ["", ""]);
     for (let i = 0; i < 50; i++) {
       var relevantGenres = artists[i].genres;
       for (let j = 0; j < relevantGenres.length; j++) {
         var genre = relevantGenres[j];
-        //console.log(genre);
         if (!genreToArtist.has(genre) && topTen.includes(genre)) {
-          genreToArtist.set(genre, [artists[i].name, artists[i]["images"]]);
-          //console.log(genreToArtist);
+          genreToArtist.set(genre, [
+            artists[i].name,
+            artists[i]["images"]["url"],
+          ]);
           break;
         }
       }
     }
-    console.log(genreToArtist);
     setGenreToArtistMap(genreToArtist);
   }
 
@@ -111,9 +108,12 @@ function Dashboard(props) {
     getCode();
   }, []);
 
+  //function genreSelectUpdate(selection: string) {
+
+  //}
+
   const authSuccess = true;
   if (authSuccess) {
-    //console.log("gen", topArtistGenre);
     return (
       <div className="Dashboard" aria-label="Dashboard Page">
         <div className="Dashboard-header" aria-label="Application Header"></div>
@@ -151,8 +151,7 @@ function Dashboard(props) {
           <GenreDropdown
             topTen={topTen}
             onGenreSelect={setTopArtistGenre}
-            //artist="whyamistillhere"
-            artist={genreToArtistMap.get(topArtistGenre)}
+            artist={genreToArtistMap.get(topArtistGenre)[0]}
           />
         </div>
         <div className="Additional-decorations">

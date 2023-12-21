@@ -10,7 +10,6 @@ const GenreDropdown = (props) => {
     setSelectedOption(selection);
     onGenreSelect(selection);
     setTopArtist(artist);
-    //setTopArtist("poopypants");
   };
 
   const options = [<option value="">Select an option</option>];

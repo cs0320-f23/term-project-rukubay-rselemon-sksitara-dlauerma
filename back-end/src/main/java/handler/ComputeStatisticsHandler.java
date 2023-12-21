@@ -55,6 +55,7 @@ public class ComputeStatisticsHandler implements Route {
             if (!otherUser.getKey().equals(username)) {
               float overlap = stats.computeOverlap(user.getTopArtists(timeRange),
                       otherUser.getValue().getTopArtists(timeRange));
+              overlap = (float)(Math.round(10000 * Math.pow(overlap, 0.1)) / 100d); //computing resonable percentage from jaccard similarity
               overlaps.put(otherUser.getKey(), overlap);
             }
           }
@@ -66,6 +67,7 @@ public class ComputeStatisticsHandler implements Route {
             if (!otherUser.getKey().equals(username)) {
               float overlap = stats.computeOverlap(user.getTopTracks(timeRange),
                       otherUser.getValue().getTopTracks(timeRange));
+              overlap = (float)(Math.round(10000 * Math.pow(overlap, 0.1)) / 100d); //computing resonable percentage from jaccard similarity
               overlaps.put(otherUser.getKey(), overlap);
             }
           }
@@ -77,6 +79,7 @@ public class ComputeStatisticsHandler implements Route {
             if (!otherUser.getKey().equals(username)) {
               float overlap = stats.computeOverlap(user.getTopGenre(timeRange),
                   otherUser.getValue().getTopGenre(timeRange));
+              overlap = (float)(Math.round(10000 * Math.pow(overlap, 0.1)) / 100d); //computing resonable percentage from jaccard similarity
               overlaps.put(otherUser.getKey(), overlap);
             }
           }
@@ -85,7 +88,7 @@ public class ComputeStatisticsHandler implements Route {
       }
       List<String> formattedOverlaps = new ArrayList<>();
       for (Map.Entry<String, Float> overlap : rankedOverlaps){
-        formattedOverlaps.add(overlap.getKey() + ": " + overlap.getValue().toString());
+        formattedOverlaps.add(overlap.getKey() + ": " + overlap.getValue().toString() + "%");
       }
       responseMap.put("overlaps", formattedOverlaps);
       responseMap.put("result", "success");

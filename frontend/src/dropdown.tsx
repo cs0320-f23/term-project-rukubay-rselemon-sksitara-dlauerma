@@ -1,27 +1,34 @@
 import React, { useState } from "react";
 
-function GenreDropdown() {
-  // State to manage the selected value
+const GenreDropdown = (props) => {
+  const { topTen, onGenreSelect, artist } = props;
   const [selectedOption, setSelectedOption] = useState("");
+  const [topArtist, setTopArtist] = useState("");
 
-  // Handler function for the change event of the select element
   const handleSelectChange = (event) => {
-    setSelectedOption(event.target.value);
+    const selection = event.target.value;
+    setSelectedOption(selection);
+    onGenreSelect(selection);
+    setTopArtist(artist);
+    //setTopArtist("poopypants");
   };
+
+  const options = [<option value="">Select an option</option>];
+  for (let i = 0; i < 10; i++) {
+    options.push(<option value={topTen[i]}> {topTen[i]} </option>);
+  }
 
   return (
     <div>
-      <h2>Your Top 10 generes</h2>
+      <h2>Your Top 10 genres</h2>
       <select value={selectedOption} onChange={handleSelectChange}>
-        <option value="">Select an option</option>
-        <option value="option1">*Pop*</option>
-        <option value="option2">*Rock*</option>
-        <option value="option3">*Rap*</option>
+        {options}
       </select>
-
-      <p>Selected Option: {selectedOption}</p>
+      <p>
+        Top _{selectedOption}_ Artist: {topArtist}
+      </p>
     </div>
   );
-}
+};
 
 export default GenreDropdown;

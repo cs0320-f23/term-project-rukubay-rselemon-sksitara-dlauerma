@@ -51,14 +51,9 @@ const Login = (props) => {
       setPasswordError("The password must be 8 characters or longer");
       return;
     } else {
-      console.log(email);
-      //navigate("/dashboard", { state: { email } });
       getURI().then((oAuthURI) => {
         window.location.href = oAuthURI;
-        //navigate(oAuthURI);
-        //console.log(oAuthURI);
       });
-      //navigate("/dashboard");
     }
   };
 

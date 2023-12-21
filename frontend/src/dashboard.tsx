@@ -10,13 +10,49 @@ function Dashboard(props) {
 
   //var authSuccess = true;
   const [topArtist, setTopArtist] = useState<string>("");
+  const [topArtistGenre, setTopArtistGenre] = useState<string>("");
   const [topSong, setTopSong] = useState<string>("");
   const [topGenre, setTopGenre] = useState<string>("");
+  const [topTen, setTopTen] = useState<string[]>([]);
   const [topMatches, setTopMatches] = useState<string>("");
+  const [artistsData, setArtistsData] = useState([]);
+  const [genreToArtistMap, setGenreToArtistMap] = useState(new Map());
+
   const userCode = searchParams.get("code");
   const state = searchParams.get("state");
   const username = state !== null ? decodeURI(state).split("|")[0] : "";
   const password = state !== null ? decodeURI(state).split("|")[1] : "";
+
+  function sortArtist(artists) {
+    var genreToArtist = new Map();
+    console.log("artists", artists);
+    console.log("topten", topTen);
+    //genreToArtist.set("", ["", ""]);
+    for (let i = 0; i < 50; i++) {
+      var relevantGenres = artists[i].genres;
+      for (let j = 0; j < relevantGenres.length; j++) {
+        var genre = relevantGenres[j];
+        //console.log(genre);
+        if (!genreToArtist.has(genre) && topTen.includes(genre)) {
+          genreToArtist.set(genre, [artists[i].name, artists[i]["images"]]);
+          //console.log(genreToArtist);
+          break;
+        }
+      }
+    }
+    console.log(genreToArtist);
+    setGenreToArtistMap(genreToArtist);
+  }
+
+  useEffect(() => {
+    console.log("faba", genreToArtistMap);
+  }, [genreToArtistMap]);
+
+  useEffect(() => {
+    if (artistsData.length > 0 && topTen.length > 0) {
+      sortArtist(artistsData);
+    }
+  }, [artistsData, topTen]);
 
   async function getCode() {
     //authenticating
@@ -33,20 +69,29 @@ function Dashboard(props) {
         password
     ).then((result) => result.json());
     //getting and computing statistics
+    await fetch("http://localhost:3232/api/top-genres?username=" + username)
+      .then((r1) => r1.json())
+      .then((r2) => {
+        if (r2["result"] == "success") {
+          setTopGenre(r2["genres"][0]);
+          setTopTen(r2["genres"].slice(0, 10));
+        }
+      });
     await fetch("http://localhost:3232/api/top-artists?username=" + username)
       .then((r1) => r1.json())
       .then((r2) => {
-        setTopArtist(r2["artists"][0].name);
+        if (r2["result"] == "success") {
+          setTopArtist(r2["artists"][0].name);
+          setArtistsData(r2["artists"]);
+          //sortArtist(r2["artists"]);
+        }
       });
     await fetch("http://localhost:3232/api/top-songs?username=" + username)
       .then((r1) => r1.json())
       .then((r2) => {
-        setTopSong(r2["songs"][0].name);
-      });
-    await fetch("http://localhost:3232/api/top-genres?username=" + username)
-      .then((r1) => r1.json())
-      .then((r2) => {
-        setTopGenre(r2["genres"][0]);
+        if (r2["result"] == "success") {
+          setTopSong(r2["songs"][0].name);
+        }
       });
     await fetch(
       "http://localhost:3232/api/compute-statistics?username=" +
@@ -56,8 +101,9 @@ function Dashboard(props) {
     )
       .then((result) => result.json())
       .then((r) => {
-        setTopMatches(r["overlaps"]);
-        console.log(topMatches);
+        if (r["result"] == "success") {
+          setTopMatches(r["overlaps"][0]);
+        }
       });
   }
 
@@ -67,19 +113,16 @@ function Dashboard(props) {
 
   const authSuccess = true;
   if (authSuccess) {
+    //console.log("gen", topArtistGenre);
     return (
       <div className="Dashboard" aria-label="Dashboard Page">
-        <div className="Dashboard-header" aria-label="Application Header">
-          <h1 aria-label="Main Title"> *Listen Data* </h1>
-        </div>
-
+        <div className="Dashboard-header" aria-label="Application Header"></div>
         <div className="Dashboard-content">
           <div className="Content-block">
             <h2>
               <FaMusic />
               Top Genre: {topGenre}
             </h2>
-            {/* Add content related to top genre */}
           </div>
 
           <div className="Content-block">
@@ -87,7 +130,6 @@ function Dashboard(props) {
               <FaUser />
               Top Artist: {topArtist}
             </h2>
-            {/* Add content related to top artist */}
           </div>
 
           <div className="Content-block">
@@ -95,7 +137,6 @@ function Dashboard(props) {
               <FaPlay />
               Top Song: {topSong}
             </h2>
-            {/* Add content related to top song */}
           </div>
 
           <div className="Content-block">
@@ -103,12 +144,16 @@ function Dashboard(props) {
               <FaPlug />
               Top Matches: {topMatches}
             </h2>
-            {/* Additional content blocks as needed */}
           </div>
         </div>
 
         <div className="GenreDropdown">
-          <GenreDropdown />
+          <GenreDropdown
+            topTen={topTen}
+            onGenreSelect={setTopArtistGenre}
+            //artist="whyamistillhere"
+            artist={genreToArtistMap.get(topArtistGenre)}
+          />
         </div>
         <div className="Additional-decorations">
           <div className="Musical-note">🎵</div>

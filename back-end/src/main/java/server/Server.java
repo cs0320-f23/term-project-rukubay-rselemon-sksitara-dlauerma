@@ -35,11 +35,11 @@ import static spark.Spark.after;
  */
 public class Server {
     // this map contains all of our users and is serialized every time a new one is added
-    public static Map<String, ourUser> users = deserializeHashMap("data/users.ser");
+    public static Map<String, ourUser> users = deserializeHashMap("back-end/data/users.ser");
     public static Map<String, ourUser> getUsers() { return users; }
     public static void addUser(String name, ourUser user) {
         users.put(name, user);
-        serializeHashMap(users,"data/users.ser");
+        serializeHashMap(users,"back-end/data/users.ser");
     }
 
     private static final String clientId = spotifyKeys.CLIENT_ID;

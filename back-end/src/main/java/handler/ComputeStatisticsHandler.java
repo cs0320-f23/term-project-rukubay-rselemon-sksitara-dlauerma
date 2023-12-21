@@ -88,7 +88,7 @@ public class ComputeStatisticsHandler implements Route {
       }
       List<String> formattedOverlaps = new ArrayList<>();
       for (Map.Entry<String, Float> overlap : rankedOverlaps){
-        formattedOverlaps.add(overlap.getKey() + ": " + overlap.getValue().toString() + "%");
+        formattedOverlaps.add(overlap.getKey() + ": " + overlap.getValue().toString() + "% ");
       }
       responseMap.put("overlaps", formattedOverlaps);
       responseMap.put("result", "success");

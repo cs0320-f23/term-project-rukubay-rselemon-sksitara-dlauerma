@@ -27,9 +27,9 @@ public class TopArtistsHandler implements Route{
         String username = request.queryParams("username");
         String timeRange = request.queryParams("time-range");
         int timeInt;
-        if (timeRange == "short") {
+        if (timeRange.equals("short")) {
             timeInt = 0;
-        } else if (timeRange == "medium") {
+        } else if (timeRange.equals("medium")) {
             timeInt = 1;
         } else {
             timeInt = 2;

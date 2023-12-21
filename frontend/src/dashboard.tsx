@@ -114,7 +114,7 @@ function Dashboard(props) {
       .then((result) => result.json())
       .then((r) => {
         if (r["result"] == "success") {
-          setTopMatches(r["overlaps"][0]);
+          setTopMatches(r["overlaps"]);
         }
       });
   }

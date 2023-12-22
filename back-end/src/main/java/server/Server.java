@@ -102,7 +102,7 @@ public class Server {
      * @param hashMap the map to serialize
      * @param filename where to do it
      */
-    private static void serializeHashMap(Map<String, ourUser> hashMap, String filename) {
+    public static void serializeHashMap(Map<String, ourUser> hashMap, String filename) {
         Moshi moshi = new Moshi.Builder().build();
         Type mapStringObject = Types.newParameterizedType(Map.class, String.class, ourUser.class);
         JsonAdapter<Map<String, ourUser>> adapter = moshi.adapter(mapStringObject);
@@ -121,7 +121,7 @@ public class Server {
      * @param filename file where the users are
      * @return
      */
-    private static Map<String, ourUser> deserializeHashMap(String filename) {
+    public static Map<String, ourUser> deserializeHashMap(String filename) {
         Moshi moshi = new Moshi.Builder().build();
         Type mapStringObject = Types.newParameterizedType(Map.class, String.class, ourUser.class);
         JsonAdapter<Map<String, ourUser>> adapter = moshi.adapter(mapStringObject);
